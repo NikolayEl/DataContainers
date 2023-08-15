@@ -1,11 +1,11 @@
-#include <iostream>
+п»ї#include <iostream>
 using namespace std;
 #define tab "\t"
 #define delimitr "\n---------------------------------------------------------------\n"
 class Element
 {
-	int Data; // значение элемента
-	Element* pNext; // адрес следующего элемента
+	int Data; // Р·РЅР°С‡РµРЅРёРµ СЌР»РµРјРµРЅС‚Р°
+	Element* pNext; // Р°РґСЂРµСЃ СЃР»РµРґСѓСЋС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р°
 public:
 	/*Element* get_pNext() const
 	{
@@ -27,11 +27,11 @@ public:
 };
 class ForwardList
 {
-	Element* Head; //Голова списка - содержит адрес начального элемента списка
+	Element* Head; //Р“РѕР»РѕРІР° СЃРїРёСЃРєР° - СЃРѕРґРµСЂР¶РёС‚ Р°РґСЂРµСЃ РЅР°С‡Р°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р° СЃРїРёСЃРєР°
 public:
 	ForwardList()
 	{
-		Head = nullptr; // Если список пуст, то его голова указывает на 0
+		Head = nullptr; // Р•СЃР»Рё СЃРїРёСЃРѕРє РїСѓСЃС‚, С‚Рѕ РµРіРѕ РіРѕР»РѕРІР° СѓРєР°Р·С‹РІР°РµС‚ РЅР° 0
 		cout << "LConstructor:\t" << this << endl;
 	}
 	ForwardList(const ForwardList& other)
@@ -68,7 +68,7 @@ public:
 			Head = Temp;
 		}
 		cout << "LDestructor:\t" << this << endl;
-		print(); //Проверка на выполенение удаления
+		print(); //РџСЂРѕРІРµСЂРєР° РЅР° РІС‹РїРѕР»РµРЅРµРЅРёРµ СѓРґР°Р»РµРЅРёСЏ
 	}
 
 	//					Adding elemetns;
@@ -158,12 +158,12 @@ public:
 	}
 	void print() const
 	{
-		Element* Temp = Head; //Temp - это итератор
-		// Итератор – это указатель, при помощи которого можно получить доступ к элементам структуры данных
+		Element* Temp = Head; //Temp - СЌС‚Рѕ РёС‚РµСЂР°С‚РѕСЂ
+		// РС‚РµСЂР°С‚РѕСЂ вЂ“ СЌС‚Рѕ СѓРєР°Р·Р°С‚РµР»СЊ, РїСЂРё РїРѕРјРѕС‰Рё РєРѕС‚РѕСЂРѕРіРѕ РјРѕР¶РЅРѕ РїРѕР»СѓС‡РёС‚СЊ РґРѕСЃС‚СѓРї Рє СЌР»РµРјРµРЅС‚Р°Рј СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С…
 		while (Temp)
 		{
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-			Temp = Temp->pNext;//Переход на следующий элемент
+			Temp = Temp->pNext;//РџРµСЂРµС…РѕРґ РЅР° СЃР»РµРґСѓСЋС‰РёР№ СЌР»РµРјРµРЅС‚
 		}
 		cout << endl;
 	}
@@ -174,7 +174,7 @@ void main()
 {
 	setlocale(LC_ALL, "");
 	int n;
-	cout << "Введите размер списка: "; cin >> n;
+	cout << "Р’РІРµРґРёС‚Рµ СЂР°Р·РјРµСЂ СЃРїРёСЃРєР°: "; cin >> n;
 	ForwardList list;
 	for (int i = 0; i < n; i++)
 	{
