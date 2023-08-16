@@ -1,7 +1,12 @@
 ﻿#include <iostream>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 #define tab "\t"
 #define delimitr "\n---------------------------------------------------------------\n"
+class ForwardList;
+ForwardList operator+(const ForwardList& left, const ForwardList& right);
 class Element
 {
 	int Data; // значение элемента
@@ -24,6 +29,7 @@ public:
 		cout << "EDestructor:\t" << this << endl;
 	}
 	friend class ForwardList;
+	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
 class ForwardList
 {
@@ -34,17 +40,20 @@ public:
 		Head = nullptr; // Если список пуст, то его голова указывает на 0
 		cout << "LConstructor:\t" << this << endl;
 	}
-	ForwardList(const ForwardList& other)
+	ForwardList(const ForwardList& other):ForwardList()
 	{
-		Element* Temp = other.Head;
-		while (Temp)
-		{
-			push_back(Temp->Data);
-			Temp = Temp->pNext;
-		}
+		//Element* Temp = other.Head;
+		//while (Temp)
+		//{
+		//	push_back(Temp->Data);
+		//	Temp = Temp->pNext;
+		//}
 		cout << "LCopyConstructor:\t" << this << endl;
+		/*for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
+			push_back(Temp->Data);*/
+		*this = other;
 	}
-	ForwardList(ForwardList&& other)
+	ForwardList(ForwardList&& other) //&& - r-value reference
 	{
 		this->Head = other.Head;
 		cout << "LMoveConstructor:\t" << this << endl;
@@ -53,6 +62,31 @@ public:
 	{
 		while (Head)pop_front();
 		cout << "LDestructor:\t" << this << endl;
+	}
+
+	//					Operators
+	ForwardList& operator=(const ForwardList& other)
+	{
+		if (this == &other) return *this;
+		while (Head)pop_front();
+		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
+			push_back(Temp->Data);
+		cout << "LCopyAssignment:\t" << this << endl;
+		return *this;
+	}
+	ForwardList& operator=(ForwardList&& other)
+	{
+		if (this == &other) return *this;
+		Element* Temp;
+		while (Head)
+		{
+			Temp = Head->pNext;
+			delete Head;
+			Head = Temp;
+		}
+		Head = other.Head;
+		cout << "LMoveAssignment:\t" << this << endl;
+		return *this;
 	}
 
 	//					Adding elemetns;
@@ -68,6 +102,7 @@ public:
 			Temp = Temp->pNext;
 		Temp->pNext = new Element(Data);
 	}
+
 	//					Delete elements
 	void pop_front()
 	{
@@ -106,49 +141,38 @@ public:
 
 
 	//					Methods:
-	ForwardList& operator=(const ForwardList& other)
-	{
-		Element* Temp_other = other.Head;
-		while (Head)pop_front();
-		while (Temp_other)
-		{
-			push_back(Temp_other->Data);
-			Temp_other = Temp_other->pNext;
-		}
-		cout << "LCopyAssignment:\t" << this << endl;
-		return *this;
-	}
-	ForwardList& operator=(ForwardList&& other)
-	{
-		if (this == &other) return *this;
-		Element* Temp;
-		while (Head)
-		{
-			Temp = Head->pNext;
-			delete Head;
-			Head = Temp;
-		}
-		Head = other.Head;
-		cout << "LMoveAssignment:\t" << this << endl;
-		return *this;
-	}
+	
 	void print() const
 	{
-		Element* Temp = Head; //Temp - это итератор
-		// Итератор – это указатель, при помощи которого можно получить доступ к элементам структуры данных
-		while (Temp)
-		{
+		//Element* Temp = Head; //Temp - это итератор
+		//// Итератор – это указатель, при помощи которого можно получить доступ к элементам структуры данных
+		//while (Temp)
+		//{
+		//	cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+		//	Temp = Temp->pNext;//Переход на следующий элемент
+		//}
+		//cout << endl;
+		cout << "Head: " << Head << endl;
+		for(Element* Temp = Head; Temp; Temp = Temp->pNext)
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-			Temp = Temp->pNext;//Переход на следующий элемент
-		}
 		cout << endl;
 	}
+	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
 
+ForwardList operator+(const ForwardList& left, const ForwardList& right)
+{
+	ForwardList cat = left;
+	for (Element* Temp = right.Head; Temp; Temp = Temp->pNext)cat.push_back(Temp->Data);
+	return cat;
+}
+//#define BASE_CHEK
+#define OPERATOR_PLUS_CHEK
 
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef BASE_CHEK
 	int n;
 	cout << "Введите размер списка: "; cin >> n;
 	ForwardList list;
@@ -189,4 +213,31 @@ void main()
 	ForwardList B;
 	B = list;
 	B.print();
+	cout << delimitr << endl;
+	ForwardList C = A + B;
+	C.print();
+#endif // BASE_CHEK
+#ifdef OPERATOR_PLUS_CHEK
+	ForwardList list1;
+	list1.push_back(3);
+	list1.push_back(5);
+	list1.push_back(8);
+	list1.push_back(13);
+	list1.push_back(21);
+	list1.print();
+	cout << delimitr << endl;
+
+	ForwardList list2;
+	list2.push_back(34);
+	list2.push_back(55);
+	list2.push_back(89);
+	list2.print();
+	cout << delimitr << endl;
+
+	ForwardList list3(list1 + list2);
+	list3.print();
+
+#endif // OPERATOR_PLUS_CHEK
+
+
 }
