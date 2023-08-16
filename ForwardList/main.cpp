@@ -37,16 +37,8 @@ public:
 	ForwardList(const ForwardList& other)
 	{
 		Element* Temp = other.Head;
-		Head = new Element(Temp->Data, Head);
-		int count = 0;
 		while (Temp)
 		{
-			count++;
-			if (count == 1)
-			{
-				Temp = Temp->pNext;
-				continue;
-			}
 			push_back(Temp->Data);
 			Temp = Temp->pNext;
 		}
@@ -54,21 +46,13 @@ public:
 	}
 	ForwardList(ForwardList&& other)
 	{
-		this->Head = nullptr;
 		this->Head = other.Head;
 		cout << "LMoveConstructor:\t" << this << endl;
 	}
 	~ForwardList()
 	{
-		Element* Temp;
-		while (Head)
-		{
-			Temp = Head->pNext;
-			Head = nullptr;
-			Head = Temp;
-		}
+		while (Head)pop_front();
 		cout << "LDestructor:\t" << this << endl;
-		print(); //Проверка на выполенение удаления
 	}
 
 	//					Adding elemetns;
@@ -124,19 +108,12 @@ public:
 	//					Methods:
 	ForwardList& operator=(const ForwardList& other)
 	{
-		Element* Temp = other.Head;
-		Head = new Element(Temp->Data);
-		int count = 0;
-		while (Temp)
+		Element* Temp_other = other.Head;
+		while (Head)pop_front();
+		while (Temp_other)
 		{
-			count++;
-			if (count == 1)
-			{
-				Temp = Temp->pNext;
-				continue;
-			}
-			push_back(Temp->Data);
-			Temp = Temp->pNext;
+			push_back(Temp_other->Data);
+			Temp_other = Temp_other->pNext;
 		}
 		cout << "LCopyAssignment:\t" << this << endl;
 		return *this;
@@ -148,7 +125,7 @@ public:
 		while (Head)
 		{
 			Temp = Head->pNext;
-			Head = nullptr;
+			delete Head;
 			Head = Temp;
 		}
 		Head = other.Head;
@@ -204,9 +181,11 @@ void main()
 	list.erase(2);
 	list.print();
 	cout << delimitr << endl;
+	cout << "Copy Constructor:" << endl;
 	ForwardList A(list);
 	A.print();
 	cout << delimitr << endl;
+	cout << "Copy Assignment:" << endl;
 	ForwardList B;
 	B = list;
 	B.print();
