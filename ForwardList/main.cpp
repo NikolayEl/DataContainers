@@ -78,47 +78,46 @@ public:
 	}
 	void push_back(int Data)
 	{
+		if (Head == nullptr) return push_front(Data);
 		Element* Temp = Head;
 		while (Temp->pNext)
 			Temp = Temp->pNext;
 		Temp->pNext = new Element(Data);
 	}
+	//					Delete elements
 	void pop_front()
 	{
+		Element* erased = Head;
 		Head = Head->pNext;
+		delete erased;
 	}
 	void pop_back()
 	{
-		int count = 0;
 		Element* Temp = Head;
-		while (Temp->pNext)
-		{
-			Temp = Temp->pNext;
-			count++;
-		}
-		Temp = Head;
-		for (int i = 0; i < count - 1; i++) Temp = Temp->pNext;
+		while (Temp->pNext->pNext) Temp = Temp->pNext;
+		delete Temp->pNext;
 		Temp->pNext = nullptr;
-		
 	}
 
 	void insert(const int index, const int number)
 	{
-		int count = 0;
+		if (index == 0) return push_front(number);
 		Element* Temp = Head;
-		if (index == 0)
-		{
-			Head = new Element(number, Head);
-		}
-		else 
-		{
-			while (count + 1 != index)
-			{
-				Temp = Temp->pNext;
-				count++;
-			}
-			Temp->pNext = new Element(number, Temp->pNext);
-		}
+		for (int i = 0; i < index - 1; i++) if(Temp->pNext)Temp = Temp->pNext;
+		// 1) Создаем новый элемент
+		Element* New = new Element(number);
+		New->pNext = Temp->pNext;
+		Temp->pNext = New;
+		//Temp->pNext = new Element(number, Temp->pNext); //my code
+	}
+	void erase(int Index)
+	{
+		if (Index == 0) return pop_front();
+		Element* Temp = Head;
+		for (int i = 0; i < Index - 1; i++) if (Temp->pNext) Temp = Temp->pNext;
+		Element* erased = Temp->pNext;
+		Temp->pNext = Temp->pNext->pNext;
+		delete erased;
 	}
 
 
@@ -181,19 +180,28 @@ void main()
 		list.push_front(rand() % 100);
 	}
 	cout << delimitr << endl;
+	cout << "Insert push back" << endl;
 	list.push_back(123);
 	list.print();
 	cout << delimitr << endl;
+	cout << "Insert push front" << endl;
 	list.push_front(123);
 	list.print();
 	cout << delimitr << endl;
+	cout << "Insert pop front" << endl;
 	list.pop_front();
 	list.print();
 	cout << delimitr << endl;
+	cout << "Insert pop back" << endl;
 	list.pop_back();
 	list.print();
 	cout << delimitr << endl;
-	list.insert(5, 321);
+	cout << "Insert element:" << endl;
+	list.insert(1, 321);
+	list.print();
+	cout << delimitr << endl;
+	cout << "Delete element:" << endl;
+	list.erase(2);
 	list.print();
 	cout << delimitr << endl;
 	ForwardList A(list);
