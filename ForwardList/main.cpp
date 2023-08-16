@@ -167,7 +167,8 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 	return cat;
 }
 //#define BASE_CHEK
-#define OPERATOR_PLUS_CHEK
+//#define OPERATOR_PLUS_CHEK
+#define RANGE_BASE_FOR_ARRAY
 
 void main()
 {
@@ -239,5 +240,21 @@ void main()
 
 #endif // OPERATOR_PLUS_CHEK
 
+#ifdef RANGE_BASE_FOR_ARRAY
+	int arr[] = { 3, 5, 8, 13, 21 };
+	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	{
+		cout << arr[i] << tab;
+	}
+	cout << endl;
+	for (int i : arr) cout << i << tab;
+	cout << endl;
 
+	ForwardList list = { 3 , 5, 8 , 13, 21 };
+	for (int i: list)
+	{
+		cout << i << tab;
+	}
+	cout << endl;
+#endif // RANGE_BASE_FOR_ARRAY
 }
