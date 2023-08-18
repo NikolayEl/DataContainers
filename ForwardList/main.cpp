@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <initializer_list>
-using namespace std;
+//using namespace std;
 using std::cin;
 using std::cout;
 using std::endl;
@@ -30,7 +30,39 @@ public:
 		cout << "EDestructor:\t" << this << endl;
 	}
 	friend class ForwardList;
+	friend class Iterator;
 	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
+};
+class Iterator
+{
+	Element* Temp;
+public:
+	Iterator(Element* Temp = nullptr) :Temp(Temp)
+	{
+		cout << "ItConstructor:\t" << this << endl;
+	}
+	~Iterator()
+	{
+		cout << "ItDestructor:\t" << this << endl;
+	}
+	Iterator& operator++()
+	{
+		Temp = Temp->pNext;
+		return *this;
+	}
+
+	bool operator==(const Iterator& other)const
+	{
+		return this->Temp == other.Temp;
+	}	
+	bool operator!=(const Iterator& other)const
+	{
+		return this->Temp != other.Temp;
+	}
+	int operator*()
+	{
+		return Temp->Data;
+	}
 };
 class ForwardList
 {
@@ -41,9 +73,14 @@ public:
 		Head = nullptr; // Если список пуст, то его голова указывает на 0
 		cout << "LConstructor:\t" << this << endl;
 	}
-	ForwardList(initializer_list<int> arr)
+	ForwardList(const std::initializer_list<int> &arr):ForwardList()
 	{
-		for (auto i: arr)
+		
+		//for (int const* it = arr.begin(); it != arr.end(); it++)
+		//{
+		//	push_back(*it);
+		//}
+		for (int i: arr)
 		{
 			push_back(i);
 		}
@@ -153,16 +190,17 @@ public:
 
 
 	//					Methods:
-	int* begin()
+	Iterator begin()
 	{
-		return &Head->Data;
+		return Head;
 	}
 
-	int* end()
+	Iterator end()
 	{
-		Element* Temp;
-		for (Temp = Head; Temp->pNext; Temp = Temp->pNext);
-		return &Temp->Data;
+		return nullptr;
+		//Element* Temp;
+		//for (Temp = Head; Temp->pNext; Temp = Temp->pNext);
+		//return &Temp->Data;
 	}
 
 	void print() const
@@ -283,11 +321,12 @@ void main()
 	//cout << "Begin:" << *list.begin() << endl; //Проверка работы функций
 	//cout << "End:" << *list.end() << endl;
 	for (int i: list) // Это не будет работать т.к. наш ForwardList - это список из данных разных областей памяти, а данный тип цикла работает с функциями
-		// Begine и End, с помощью которых можно задать начало и конец массива и таким образом перебрать массив, но только из одной области памяти непрерывной
-		// Я не знаю может быть кроме этих функций можно задать и шаг, тогда эту задачу можно выполнить, а иначе нет.
+	//	// Begine и End, с помощью которых можно задать начало и конец массива и таким образом перебрать массив, но только из одной области памяти непрерывной
+	//	// Я не знаю может быть кроме этих функций можно задать и шаг, тогда эту задачу можно выполнить, а иначе нет.
 	{
 		cout << i << tab;
 	}
 	cout << endl;
+	//cout << endl;
 #endif // RANGE_BASE_FOR_ARRAY
 }
