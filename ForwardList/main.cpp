@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <initializer_list>
 using namespace std;
 using std::cin;
 using std::cout;
@@ -40,6 +41,14 @@ public:
 		Head = nullptr; // Если список пуст, то его голова указывает на 0
 		cout << "LConstructor:\t" << this << endl;
 	}
+	ForwardList(initializer_list<int> arr)
+	{
+		for (auto i: arr)
+		{
+			push_back(i);
+		}
+		cout << "ArrConstructor:\t" << this << endl;
+	}
 	ForwardList(const ForwardList& other):ForwardList()
 	{
 		//Element* Temp = other.Head;
@@ -49,9 +58,9 @@ public:
 		//	Temp = Temp->pNext;
 		//}
 		cout << "LCopyConstructor:\t" << this << endl;
-		/*for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
-			push_back(Temp->Data);*/
-		*this = other;
+		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
+			push_back(Temp->Data);
+		//*this = other;
 	}
 	ForwardList(ForwardList&& other) //&& - r-value reference
 	{
@@ -77,14 +86,17 @@ public:
 	ForwardList& operator=(ForwardList&& other)
 	{
 		if (this == &other) return *this;
-		Element* Temp;
-		while (Head)
-		{
-			Temp = Head->pNext;
-			delete Head;
-			Head = Temp;
-		}
-		Head = other.Head;
+		while (Head) pop_front();
+		Head = nullptr;
+		Element* Temp_this = Head;
+		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
+		Element* Temp_other = other.Head;
+		//while(Temp_other)
+		//{
+		//	Element* New = Temp_other;
+		//	Temp_other = nullptr;
+		//	Temp_other = New->pNext;
+		//}
 		cout << "LMoveAssignment:\t" << this << endl;
 		return *this;
 	}
@@ -141,7 +153,18 @@ public:
 
 
 	//					Methods:
-	
+	int* begin()
+	{
+		return &Head->Data;
+	}
+
+	int* end()
+	{
+		Element* Temp;
+		for (Temp = Head; Temp->pNext; Temp = Temp->pNext);
+		return &Temp->Data;
+	}
+
 	void print() const
 	{
 		//Element* Temp = Head; //Temp - это итератор
@@ -166,6 +189,8 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 	for (Element* Temp = right.Head; Temp; Temp = Temp->pNext)cat.push_back(Temp->Data);
 	return cat;
 }
+
+
 //#define BASE_CHEK
 //#define OPERATOR_PLUS_CHEK
 #define RANGE_BASE_FOR_ARRAY
@@ -235,13 +260,15 @@ void main()
 	list2.print();
 	cout << delimitr << endl;
 
-	ForwardList list3(list1 + list2);
+	ForwardList list3;
+	cout << delimitr << endl;
+	list3 = (list1 + list2);
 	list3.print();
 
 #endif // OPERATOR_PLUS_CHEK
 
 #ifdef RANGE_BASE_FOR_ARRAY
-	int arr[] = { 3, 5, 8, 13, 21 };
+	int arr[] = {3, 5, 8, 13, 21};
 	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
 	{
 		cout << arr[i] << tab;
@@ -250,8 +277,14 @@ void main()
 	for (int i : arr) cout << i << tab;
 	cout << endl;
 
-	ForwardList list = { 3 , 5, 8 , 13, 21 };
-	for (int i: list)
+	ForwardList list = {3, 5, 8, 13, 21};
+	list.print();
+
+	//cout << "Begin:" << *list.begin() << endl; //Проверка работы функций
+	//cout << "End:" << *list.end() << endl;
+	for (int i: list) // Это не будет работать т.к. наш ForwardList - это список из данных разных областей памяти, а данный тип цикла работает с функциями
+		// Begine и End, с помощью которых можно задать начало и конец массива и таким образом перебрать массив, но только из одной области памяти непрерывной
+		// Я не знаю может быть кроме этих функций можно задать и шаг, тогда эту задачу можно выполнить, а иначе нет.
 	{
 		cout << i << tab;
 	}
