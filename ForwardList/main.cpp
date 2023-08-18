@@ -99,9 +99,11 @@ public:
 			push_back(Temp->Data);
 		//*this = other;
 	}
-	ForwardList(ForwardList&& other) //&& - r-value reference
+	ForwardList(ForwardList&& other):ForwardList() //&& - r-value reference
 	{
-		this->Head = other.Head;
+		//this->Head = other.Head;
+		//other.Head = nullptr;
+		*this = std::move(other);
 		cout << "LMoveConstructor:\t" << this << endl;
 	}
 	~ForwardList()
@@ -124,10 +126,12 @@ public:
 	{
 		if (this == &other) return *this;
 		while (Head) pop_front();
-		Head = nullptr;
+		this->Head = other.Head;
+		other.Head = nullptr; 
+		/*Head = nullptr;
 		Element* Temp_this = Head;
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
-		Element* Temp_other = other.Head;
+		Element* Temp_other = other.Head;*/
 		//while(Temp_other)
 		//{
 		//	Element* New = Temp_other;
@@ -231,7 +235,8 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 
 //#define BASE_CHEK
 //#define OPERATOR_PLUS_CHEK
-#define RANGE_BASE_FOR_ARRAY
+//#define RANGE_BASE_FOR_ARRAY
+#define MOVE_SEMANTIC_CHEK
 
 void main()
 {
@@ -329,4 +334,20 @@ void main()
 	cout << endl;
 	//cout << endl;
 #endif // RANGE_BASE_FOR_ARRAY
+
+#ifdef MOVE_SEMANTIC_CHEK
+	ForwardList list1 = { 3, 5, 8 , 13, 21 };
+	for (int i : list1) cout << i << tab; cout << endl;
+	cout << delimitr << endl;
+
+	ForwardList list2 = { 34, 55, 89 };
+	for (int i : list2) cout << i << tab; cout << endl;
+	cout << delimitr << endl;
+	
+	ForwardList list3;
+	list3 = list1 + list2;
+	cout << delimitr << endl;
+	for (int i : list3) cout << i << tab; cout << endl; //Move constructor
+#endif // MOVE_SEMANTIC_CHEK
+
 }
