@@ -97,6 +97,30 @@ public:
 		}
 		count++;
 	}
+	void erase(int index)
+	{
+		if (index == 0) return pop_front();
+		if (index >= count - 1) return pop_back();
+		if (index <= count / 2)
+		{
+			Element* Temp = Head;
+			for (int i = 0; i < index - 1; i++) Temp = Temp->pNext;
+			Temp->pNext->pNext->pPrev = Temp;
+			Element* New = Temp->pNext;
+			Temp->pNext = Temp->pNext->pNext;
+			delete New;
+		}
+		else
+		{
+			Element* Temp = Tail;
+			for (int i = count; i > index + 2; i--) Temp = Temp->pPrev;
+			Temp->pPrev->pPrev->pNext = Temp;
+			Element* New = Temp->pPrev;
+			Temp->pPrev = Temp->pPrev->pPrev;
+			delete New;
+		}
+		count--;
+	}
 	void print() const
 	{
 		std::cout << "Head:\t" << Head << std::endl;
@@ -155,6 +179,11 @@ void main()
 	std::cout << delimitr << std::endl;
 	std::cout << "Insert:" << std::endl;
 	list.insert(4, 321);
+	list.print();
+	list.print_end();
+	std::cout << delimitr << std::endl;
+	std::cout << "Erase:" << std::endl;
+	list.erase(0);
 	list.print();
 	list.print_end();
 }
