@@ -28,16 +28,30 @@ class DoublyList
 	Element* Tail;
 
 public:
+	//							Constructor's
 	DoublyList()
 	{
 		Head = nullptr; //Если список пуст то его голова указывает на 0
 		Tail = nullptr; //Если список пуст то его хвост указывает на 0
 		std:: cout << "DConstructor:\t" << this << std::endl;
 	}
+	DoublyList(const DoublyList& other) :DoublyList()
+	{
+		std::cout << "DCopyConstructor:\t" << this << std::endl;
+		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
+	}
 	~DoublyList()
 	{
 		while (Head)pop_front();
 			std::cout << "DDistructor:\t" << this << std::endl;
+	}
+	//								Operator's
+	DoublyList& operator=(const DoublyList& other)
+	{
+		std::cout << "DCopyAssignment:\t" << this << std::endl;
+		while (Head)pop_front();
+		Head = nullptr;
+		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
 	}
 	//								Method's
 	void push_front(int Data)
@@ -143,13 +157,17 @@ public:
 };
 
 //#define CHEK_PUSH_FRONT
-#define CHEK_PUSH_BACK
+//#define CHEK_FUNCTIONS
+#define CHEK_COPY_METHODS
 void main()
 {
 	setlocale(LC_ALL, "");
 	int size;
 	std::cout << "Enter size you list: "; std::cin >> size;
 	DoublyList list;
+	for (int i = 0; i < size; i++)list.push_back(rand() % 100);
+	list.print();
+	list.print_end();
 #ifdef CHEK_PUSH_FRONT
 	for (int i = 0; i < size; i++)
 	{
@@ -160,10 +178,7 @@ void main()
 	list.print_end();
 
 #endif // CHEK_PUSH_FRONT
-	for (int i = 0; i < size; i++)
-	{
-		list.push_back(rand() % 100);
-	}
+#ifdef CHEK_FUNCTIONS
 	list.print();
 	/*std::cout << delimitr << std::endl;
 	list.print_end();*/
@@ -187,4 +202,14 @@ void main()
 	list.erase(0);
 	list.print();
 	list.print_end();
+#endif // CHEK_FUNCTIONS
+#ifdef CHEK_COPY_METHODS
+	std::cout << delimitr << std::endl;
+	std::cout << "CopyConstructor:" << std::endl;
+	DoublyList list1 = list;
+	list1.print();
+	list1.print_end();
+
+#endif // CHEK_COPY_METHODS
+
 }
