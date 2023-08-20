@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #define delimitr "\n-----------------------------------------------------\n"
 class DoublyList;
+DoublyList operator+(const DoublyList& left, const DoublyList& right);
 class Element
 {
 	int Data;
@@ -18,6 +19,7 @@ public:
 		std::cout << "EDistructor:\t" << this << std::endl;
 	}
 	friend class DoublyList;
+	friend DoublyList operator+(const DoublyList& left, const DoublyList& right);
 };
 
 class DoublyList
@@ -39,10 +41,21 @@ public:
 	{
 		std::cout << "DCopyConstructor:\t" << this << std::endl;
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
+		count = other.count;
+	}
+	DoublyList(DoublyList&& other) :DoublyList()
+	{
+		std::cout << "DMoveConstructor:\t" << this << std::endl;
+		Head = other.Head;
+		other.Head = nullptr;
+		Tail = other.Tail;
+		other.Tail = nullptr;
+		count = other.count;
 	}
 	~DoublyList()
 	{
 		while (Head)pop_front();
+			count = 0;
 			std::cout << "DDistructor:\t" << this << std::endl;
 	}
 	//								Operator's
@@ -52,6 +65,20 @@ public:
 		while (Head)pop_front();
 		Head = nullptr;
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
+		return *this;
+		count = other.count;
+	}
+	DoublyList& operator=(DoublyList&& other)
+	{
+		if (this == &other) return *this;
+		while (Head)pop_front();
+		Head = other.Head;
+		other.Head = nullptr;
+		Tail = other.Tail;
+		other.Tail = nullptr;
+		std::cout << "DMoveConstructor:\t" << this << std::endl;
+		count = other.count;
+		return *this;
 	}
 	//								Method's
 	void push_front(int Data)
@@ -154,11 +181,19 @@ public:
 		std::cout << "size list:\t" << count << std::endl;
 		std::cout << std::endl;
 	}
+	friend DoublyList operator+(const DoublyList& left, const DoublyList& right);
 };
+DoublyList operator+(const DoublyList& left, const DoublyList& right)
+{
+	DoublyList cat = left;
+	for (Element* Temp = right.Head; Temp; Temp = Temp->pNext) cat.push_back(Temp->Data);
+	return cat;
+}
 
 //#define CHEK_PUSH_FRONT
 //#define CHEK_FUNCTIONS
-#define CHEK_COPY_METHODS
+//#define CHEK_COPY_METHODS
+#define CHEK_MOVE_METODS
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -167,7 +202,7 @@ void main()
 	DoublyList list;
 	for (int i = 0; i < size; i++)list.push_back(rand() % 100);
 	list.print();
-	list.print_end();
+	//list.print_end(); //Проверка обратного выведения
 #ifdef CHEK_PUSH_FRONT
 	for (int i = 0; i < size; i++)
 	{
@@ -209,7 +244,29 @@ void main()
 	DoublyList list1 = list;
 	list1.print();
 	list1.print_end();
+	std::cout << delimitr << std::endl;
+	std::cout << "CopyAssignment:" << std::endl;
+	DoublyList list2;
+	list2 = list;
+	list2.print();
+	list2.print_end();
 
 #endif // CHEK_COPY_METHODS
+#ifdef CHEK_MOVE_METODS
+	DoublyList list2;
+	for (int i = 0; i < size + 2; i++)list2.push_back(rand() % 100);
+	list2.print();
+	std::cout << delimitr << std::endl;
+	std::cout << "MoveConstructor:" << std::endl;
+	DoublyList list3 = list + list2;
+	//std::cout << delimitr << std::endl;
+	list3.print();
+	std::cout << delimitr << std::endl;
+	std::cout << "MoveAssignment:" << std::endl;
+	DoublyList list4;
+	list4 = list + list2;
+	list4.print();
 
+#endif // CHEK_MOVE_METODS
+	
 }
