@@ -21,7 +21,9 @@ public:
 };
 
 class DoublyList
-{
+{	
+	int count = 0; //Завел счетчик для уменьшения кол-во итераций в методах - вставлять по индексу и удалять по индексу
+				   // Я прикинул, что прохождение по всему списку для поиска кол-ва значений не рентабельно - т.к. значений может быть 1000+
 	Element* Head;
 	Element* Tail;
 
@@ -48,6 +50,7 @@ public:
 		//std::cout << "Head: \t" << Head << std::endl;
 		//std::cout << "Tail: \t" << Tail << std::endl;
 		//std::cout << "pNext: \t" << Head->pNext << std::endl;
+		count++;
 	}
 	void push_back(int Data)
 	{
@@ -56,6 +59,7 @@ public:
 		if (Tail) Tail->pNext = Temp;
 		Tail = Temp;
 		if (!this->Tail->pPrev) Head = Tail;
+		count++;
 	}
 	void pop_front()
 	{
@@ -63,6 +67,7 @@ public:
 		delete Head;
 		Head = Temp;
 		Head->pPrev = nullptr;
+		count--;
 	}
 	void pop_back()
 	{
@@ -70,12 +75,14 @@ public:
 		delete Tail;
 		Tail = Temp;
 		Tail->pNext = nullptr;
+		count--;
 	}
 	void print() const
 	{
 		std::cout << "Head:\t" << Head << std::endl;
 		std::cout << "Tail:\t" << Tail << std::endl;
 		for (Element* Temp = Head; Temp; Temp = Temp->pNext) if(Temp)std::cout << Temp->Data << " " << std::endl;
+		std::cout << "size list:\t" << count << std::endl;
 		std::cout << std::endl;
 		//std::cout << "Begin: \t" << Head << "\t" << Head->Data << std::endl;
 		//std::cout << "End: \t" << Tail << "\t" << Tail->Data << std::endl;
@@ -85,6 +92,7 @@ public:
 		std::cout << "Head:\t" << Head << std::endl;
 		std::cout << "Tail:\t" << Tail << std::endl;
 		for (Element* Temp = Tail; Temp; Temp = Temp->pPrev) if(Temp)std::cout << Temp->Data << " " << std::endl;
+		std::cout << "size list:\t" << count << std::endl;
 		std::cout << std::endl;
 	}
 };
