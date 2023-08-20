@@ -51,7 +51,11 @@ public:
 	}
 	void push_back(int Data)
 	{
-
+		Element* Temp;
+		Temp = new Element(Data, Tail, nullptr);
+		if (Tail) Tail->pNext = Temp;
+		Tail = Temp;
+		if (!this->Tail->pPrev) Head = Tail;
 	}
 	void print() const
 	{
@@ -71,14 +75,15 @@ public:
 	}
 };
 
-#define START_DOUBLY_LIST
+//#define CHEK_PUSH_FRONT
+#define CHEK_PUSH_BACK
 void main()
 {
 	setlocale(LC_ALL, "");
-#ifdef START_DOUBLY_LIST
 	int size;
-	std::cout << "Enter size you array: "; std::cin >> size;
+	std::cout << "Enter size you list: "; std::cin >> size;
 	DoublyList list;
+#ifdef CHEK_PUSH_FRONT
 	for (int i = 0; i < size; i++)
 	{
 		list.push_front(rand() % 100);
@@ -87,7 +92,13 @@ void main()
 	std::cout << delimitr << std::endl;
 	list.print_end();
 
-#endif // START_DOUBLY_LIST
-
+#endif // CHEK_PUSH_FRONT
+	for (int i = 0; i < size; i++)
+	{
+		list.push_back(rand() % 100);
+	}
+	list.print();
+	std::cout << delimitr << std::endl;
+	list.print_end();
 
 }
