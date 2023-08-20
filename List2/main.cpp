@@ -2,6 +2,7 @@
 #define delimitr "\n-----------------------------------------------------\n"
 class DoublyList;
 DoublyList operator+(const DoublyList& left, const DoublyList& right);
+class Iterator;
 class Element
 {
 	int Data;
@@ -20,6 +21,42 @@ public:
 	}
 	friend class DoublyList;
 	friend DoublyList operator+(const DoublyList& left, const DoublyList& right);
+	friend class Iterator;
+};
+class Iterator
+{
+	Element* Temp;
+public:
+	Iterator(Element* Temp = nullptr) : Temp(Temp)
+	{
+		std::cout << "ITConstructor:\t" << this << std::endl;
+	}
+	~Iterator()
+	{
+		std::cout << "ITDestructor:\t" << this << std::endl;
+	}
+	Iterator& operator++()
+	{
+		Temp = Temp->pNext;
+		return *this;
+	}
+	Iterator& operator--()
+	{
+		Temp = Temp->pPrev;
+		return *this;
+	}
+	bool operator==(const Iterator& other) const
+	{
+		return this->Temp == other.Temp;
+	}
+	bool operator!=(const Iterator& other) const
+	{
+		return this->Temp != other.Temp;
+	}
+	int operator*()
+	{
+		return Temp->Data;
+	}
 };
 
 class DoublyList
@@ -36,6 +73,11 @@ public:
 		Head = nullptr; //Если список пуст то его голова указывает на 0
 		Tail = nullptr; //Если список пуст то его хвост указывает на 0
 		std:: cout << "DConstructor:\t" << this << std::endl;
+	}
+	DoublyList(const std::initializer_list<int> arr)
+	{
+		for (int i : arr)push_back(i);
+		std::cout << "1ArgConstructor:\t" << this << std::endl;
 	}
 	DoublyList(const DoublyList& other) :DoublyList()
 	{
@@ -163,6 +205,14 @@ public:
 		}
 		count--;
 	}
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
 	void print() const
 	{
 		std::cout << "Head:\t" << Head << std::endl;
@@ -182,6 +232,7 @@ public:
 		std::cout << std::endl;
 	}
 	friend DoublyList operator+(const DoublyList& left, const DoublyList& right);
+	friend class Iterator;
 };
 DoublyList operator+(const DoublyList& left, const DoublyList& right)
 {
@@ -193,15 +244,16 @@ DoublyList operator+(const DoublyList& left, const DoublyList& right)
 //#define CHEK_PUSH_FRONT
 //#define CHEK_FUNCTIONS
 //#define CHEK_COPY_METHODS
-#define CHEK_MOVE_METODS
+//#define CHEK_MOVE_METODS
+#define CHEK_INITIALIZER_LIST
 void main()
 {
 	setlocale(LC_ALL, "");
-	int size;
-	std::cout << "Enter size you list: "; std::cin >> size;
-	DoublyList list;
-	for (int i = 0; i < size; i++)list.push_back(rand() % 100);
-	list.print();
+	//int size;
+	//std::cout << "Enter size you list: "; std::cin >> size;
+	//DoublyList list;
+	//for (int i = 0; i < size; i++)list.push_back(rand() % 100);
+	//list.print();
 	//list.print_end(); //Проверка обратного выведения
 #ifdef CHEK_PUSH_FRONT
 	for (int i = 0; i < size; i++)
@@ -268,5 +320,13 @@ void main()
 	list4.print();
 
 #endif // CHEK_MOVE_METODS
-	
+#ifdef CHEK_INITIALIZER_LIST
+	DoublyList list = { 3, 5, 8, 13, 21 };
+	list.print();
+	list.print_end();
+
+	for (int i : list) std::cout << i << "\t"; std::cout << std::endl;
+	std::cout << std::endl;
+#endif // CHEK_INITIALIZER_LIST
+
 }
