@@ -77,6 +77,26 @@ public:
 		Tail->pNext = nullptr;
 		count--;
 	}
+	void insert(int index, int Data)
+	{
+		if (index == 0) return push_front(Data);
+		if (index >= count) return push_back(Data);
+		if (index <= count / 2)
+		{
+			Element* Temp = Head;
+			for (int i = 0; i < index - 1; i++) Temp = Temp->pNext;
+			Temp->pNext = new Element(Data, Temp, Temp->pNext);
+			Temp->pNext->pNext->pPrev = Temp->pNext;
+		}
+		else
+		{
+			Element* Temp = Tail;
+			for (int i = count; i > index + 1; i--) Temp = Temp->pPrev;
+			Temp->pPrev = new Element(Data, Temp->pPrev, Temp);
+			Temp->pPrev->pPrev->pNext = Temp->pPrev;
+		}
+		count++;
+	}
 	void print() const
 	{
 		std::cout << "Head:\t" << Head << std::endl;
@@ -126,8 +146,15 @@ void main()
 	std::cout << "Pop front: " << std::endl;
 	list.pop_front();
 	list.print();
+	list.print_end();
 	std::cout << delimitr << std::endl;
 	std::cout << "Pop back:" << std::endl;
 	list.pop_back();
 	list.print();
+	list.print_end();
+	std::cout << delimitr << std::endl;
+	std::cout << "Insert:" << std::endl;
+	list.insert(4, 321);
+	list.print();
+	list.print_end();
 }
