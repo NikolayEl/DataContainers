@@ -39,7 +39,7 @@ public:
 	//								Method's
 	void push_front(int Data)
 	{
-		Element* Temp;
+		Element* Temp; //Завожу дополнительную переменную Temp для того, чтобы прописывать pPrev
 		Temp = new Element(Data, nullptr, Head);
 		if (Head) Head->pPrev = Temp;
 		//if(Head)std::cout << "pPrev: \t" << Head->pPrev << std::endl; //сделал чтобы смотреть как записываются адреса
@@ -56,6 +56,20 @@ public:
 		if (Tail) Tail->pNext = Temp;
 		Tail = Temp;
 		if (!this->Tail->pPrev) Head = Tail;
+	}
+	void pop_front()
+	{
+		Element* Temp = Head->pNext;
+		delete Head;
+		Head = Temp;
+		Head->pPrev = nullptr;
+	}
+	void pop_back()
+	{
+		Element* Temp = Tail->pPrev;
+		delete Tail;
+		Tail = Temp;
+		Tail->pNext = nullptr;
 	}
 	void print() const
 	{
@@ -98,7 +112,14 @@ void main()
 		list.push_back(rand() % 100);
 	}
 	list.print();
+	/*std::cout << delimitr << std::endl;
+	list.print_end();*/
 	std::cout << delimitr << std::endl;
-	list.print_end();
-
+	std::cout << "Pop front: " << std::endl;
+	list.pop_front();
+	list.print();
+	std::cout << delimitr << std::endl;
+	std::cout << "Pop back:" << std::endl;
+	list.pop_back();
+	list.print();
 }
