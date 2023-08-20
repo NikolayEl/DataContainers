@@ -36,7 +36,8 @@ public:
 	}
 	~DoublyList()
 	{
-		std::cout << "DDistructor:\t" << this << std::endl;
+		while (Head)pop_front();
+			std::cout << "DDistructor:\t" << this << std::endl;
 	}
 	//								Method's
 	void push_front(int Data)
@@ -66,7 +67,7 @@ public:
 		Element* Temp = Head->pNext;
 		delete Head;
 		Head = Temp;
-		Head->pPrev = nullptr;
+		if(Head)Head->pPrev = nullptr;
 		count--;
 	}
 	void pop_back()
