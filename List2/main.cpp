@@ -245,7 +245,7 @@ DoublyList operator+(const DoublyList& left, const DoublyList& right)
 //#define CHEK_FUNCTIONS
 //#define CHEK_COPY_METHODS
 //#define CHEK_MOVE_METODS
-#define CHEK_INITIALIZER_LIST
+//#define CHEK_INITIALIZER_LIST
 void main()
 {
 	setlocale(LC_ALL, "");
