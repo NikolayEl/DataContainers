@@ -1,7 +1,8 @@
 ﻿#include <iostream>
 #define delimiter "\n-----------------------------------------------------\n"
-class DoublyList;
-DoublyList operator+(const DoublyList& left, const DoublyList& right);
+class List;
+List operator+(const List& left, const List& right);
+//std::ostream& operator<<(std::ostream& out, const Iterator*& obj);
 class Iterator;
 class Element
 {
@@ -19,14 +20,15 @@ public:
 	{
 		std::cout << "EDistructor:\t" << this << std::endl;
 	}
-	friend class DoublyList;
-	friend DoublyList operator+(const DoublyList& left, const DoublyList& right);
+	friend class List;
+	friend List operator+(const List& left, const List& right);
+	//friend std::ostream& operator<<(std::ostream& out, const Iterator*& obj);
 	friend class Iterator;
 };
 class Iterator
 {
 	Element* Temp;
-public:
+	public:
 	Iterator(Element* Temp = nullptr) : Temp(Temp)
 	{
 		std::cout << "ITConstructor:\t" << this << std::endl;
@@ -57,60 +59,65 @@ public:
 	{
 		return Temp->Data;
 	}
+	explicit operator int()
+	{
+		return Temp->Data;
+	}
+	//friend std::ostream& operator<<(std::ostream& out, const Iterator*& obj);
 };
 
-class DoublyList
+class List
 {	
-	int count = 0; //Завел счетчик для уменьшения кол-во итераций в методах - вставлять по индексу и удалять по индексу
+	int size = 0; //Завел счетчик для уменьшения кол-во итераций в методах - вставлять по индексу и удалять по индексу
 				   // Я прикинул, что прохождение по всему списку для поиска кол-ва значений не рентабельно - т.к. значений может быть 1000+
 	Element* Head;
 	Element* Tail;
 
 public:
 	//							Constructor's
-	DoublyList()
+	List()
 	{
 		Head = nullptr; //Если список пуст то его голова указывает на 0
 		Tail = nullptr; //Если список пуст то его хвост указывает на 0
 		std:: cout << "DConstructor:\t" << this << std::endl;
 	}
-	DoublyList(const std::initializer_list<int> arr)
+	List(const std::initializer_list<int> arr)
 	{
 		for (int i : arr)push_back(i);
 		std::cout << "1ArgConstructor:\t" << this << std::endl;
 	}
-	DoublyList(const DoublyList& other) :DoublyList()
+	List(const List& other) :List()
 	{
 		std::cout << "DCopyConstructor:\t" << this << std::endl;
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
-		count = other.count;
+		size = other.size;
 	}
-	DoublyList(DoublyList&& other) :DoublyList()
+	List(List&& other) :List()
 	{
 		std::cout << "DMoveConstructor:\t" << this << std::endl;
 		Head = other.Head;
 		other.Head = nullptr;
 		Tail = other.Tail;
 		other.Tail = nullptr;
-		count = other.count;
+		size = other.size;
 	}
-	~DoublyList()
+	~List()
 	{
 		while (Head)pop_front();
-			count = 0;
+			size = 0;
 			std::cout << "DDistructor:\t" << this << std::endl;
 	}
 	//								Operator's
-	DoublyList& operator=(const DoublyList& other)
+	List& operator=(const List& other)
 	{
 		std::cout << "DCopyAssignment:\t" << this << std::endl;
 		while (Head)pop_front();
 		Head = nullptr;
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
 		return *this;
-		count = other.count;
+		size = other.size;
 	}
-	DoublyList& operator=(DoublyList&& other)
+	List& operator=(List&& other)
 	{
 		if (this == &other) return *this;
 		while (Head)pop_front();
@@ -119,10 +126,14 @@ public:
 		Tail = other.Tail;
 		other.Tail = nullptr;
 		std::cout << "DMoveConstructor:\t" << this << std::endl;
-		count = other.count;
+		size = other.size;
 		return *this;
 	}
 	//								Method's
+	Element get_tail() const
+	{
+		return *this->Tail;
+	}
 	void push_front(int Data)
 	{
 		Element* Temp; //Завожу дополнительную переменную Temp для того, чтобы прописывать pPrev
@@ -134,7 +145,7 @@ public:
 		//std::cout << "Head: \t" << Head << std::endl;
 		//std::cout << "Tail: \t" << Tail << std::endl;
 		//std::cout << "pNext: \t" << Head->pNext << std::endl;
-		count++;
+		size++;
 	}
 	void push_back(int Data)
 	{
@@ -143,7 +154,7 @@ public:
 		if (Tail) Tail->pNext = Temp;
 		Tail = Temp;
 		if (!this->Tail->pPrev) Head = Tail;
-		count++;
+		size++;
 	}
 	void pop_front()
 	{
@@ -151,7 +162,7 @@ public:
 		delete Head;
 		Head = Temp;
 		if(Head)Head->pPrev = nullptr;
-		count--;
+		size--;
 	}
 	void pop_back()
 	{
@@ -159,13 +170,13 @@ public:
 		delete Tail;
 		Tail = Temp;
 		Tail->pNext = nullptr;
-		count--;
+		size--;
 	}
 	void insert(int index, int Data)
 	{
 		if (index == 0) return push_front(Data);
-		if (index >= count) return push_back(Data);
-		if (index <= count / 2)
+		if (index >= size) return push_back(Data);
+		if (index <= size / 2)
 		{
 			Element* Temp = Head;
 			for (int i = 0; i < index - 1; i++) Temp = Temp->pNext;
@@ -175,17 +186,17 @@ public:
 		else
 		{
 			Element* Temp = Tail;
-			for (int i = count; i > index + 1; i--) Temp = Temp->pPrev;
+			for (int i = size; i > index + 1; i--) Temp = Temp->pPrev;
 			Temp->pPrev = new Element(Data, Temp->pPrev, Temp);
 			Temp->pPrev->pPrev->pNext = Temp->pPrev;
 		}
-		count++;
+		size++;
 	}
 	void erase(int index)
 	{
 		if (index == 0) return pop_front();
-		if (index >= count - 1) return pop_back();
-		if (index <= count / 2)
+		if (index >= size - 1) return pop_back();
+		if (index <= size / 2)
 		{
 			Element* Temp = Head;
 			for (int i = 0; i < index - 1; i++) Temp = Temp->pNext;
@@ -197,13 +208,13 @@ public:
 		else
 		{
 			Element* Temp = Tail;
-			for (int i = count; i > index + 2; i--) Temp = Temp->pPrev;
+			for (int i = size; i > index + 2; i--) Temp = Temp->pPrev;
 			Temp->pPrev->pPrev->pNext = Temp;
 			Element* New = Temp->pPrev;
 			Temp->pPrev = Temp->pPrev->pPrev;
 			delete New;
 		}
-		count--;
+		size--;
 	}
 	Iterator begin()
 	{
@@ -213,12 +224,16 @@ public:
 	{
 		return nullptr;
 	}
+	Iterator ended()
+	{
+		return Tail;
+	}
 	void print() const
 	{
 		std::cout << "Head:\t" << Head << std::endl;
 		std::cout << "Tail:\t" << Tail << std::endl;
 		for (Element* Temp = Head; Temp; Temp = Temp->pNext) if(Temp)std::cout << Temp->Data << " " << std::endl;
-		std::cout << "size list:\t" << count << std::endl;
+		std::cout << "size list:\t" << size << std::endl;
 		std::cout << std::endl;
 		//std::cout << "Begin: \t" << Head << "\t" << Head->Data << std::endl;
 		//std::cout << "End: \t" << Tail << "\t" << Tail->Data << std::endl;
@@ -228,30 +243,34 @@ public:
 		std::cout << "Head:\t" << Head << std::endl;
 		std::cout << "Tail:\t" << Tail << std::endl;
 		for (Element* Temp = Tail; Temp; Temp = Temp->pPrev) if(Temp)std::cout << Temp->Data << " " << std::endl;
-		std::cout << "size list:\t" << count << std::endl;
+		std::cout << "size list:\t" << size << std::endl;
 		std::cout << std::endl;
 	}
-	friend DoublyList operator+(const DoublyList& left, const DoublyList& right);
+	friend List operator+(const List& left, const List& right);
 	friend class Iterator;
 };
-DoublyList operator+(const DoublyList& left, const DoublyList& right)
+List operator+(const List& left, const List& right)
 {
-	DoublyList cat = left;
+	List cat = left;
 	for (Element* Temp = right.Head; Temp; Temp = Temp->pNext) cat.push_back(Temp->Data);
 	return cat;
 }
+//std::ostream& operator<<(std::ostream& out, const Iterator*& obj)
+//{
+//	return out << obj->Temp->Data;
+//}
 
 //#define CHEK_PUSH_FRONT
 //#define CHEK_FUNCTIONS
 //#define CHEK_COPY_METHODS
 //#define CHEK_MOVE_METODS
-//#define CHEK_INITIALIZER_LIST
+#define CHEK_INITIALIZER_LIST
 void main()
 {
 	setlocale(LC_ALL, "");
 	//int size;
 	//std::cout << "Enter size you list: "; std::cin >> size;
-	//DoublyList list;
+	//List list;
 	//for (int i = 0; i < size; i++)list.push_back(rand() % 100);
 	//list.print();
 	//list.print_end(); //Проверка обратного выведения
@@ -293,40 +312,42 @@ void main()
 #ifdef CHEK_COPY_METHODS
 	std::cout << delimiter << std::endl;
 	std::cout << "CopyConstructor:" << std::endl;
-	DoublyList list1 = list;
+	List list1 = list;
 	list1.print();
 	list1.reverse();
 	std::cout << delimiter << std::endl;
 	std::cout << "CopyAssignment:" << std::endl;
-	DoublyList list2;
+	List list2;
 	list2 = list;
 	list2.print();
 	list2.reverse();
 
 #endif // CHEK_COPY_METHODS
 #ifdef CHEK_MOVE_METODS
-	DoublyList list2;
+	List list2;
 	for (int i = 0; i < size + 2; i++)list2.push_back(rand() % 100);
 	list2.print();
 	std::cout << delimiter << std::endl;
 	std::cout << "MoveConstructor:" << std::endl;
-	DoublyList list3 = list + list2;
+	List list3 = list + list2;
 	//std::cout << delimiter << std::endl;
 	list3.print();
 	std::cout << delimiter << std::endl;
 	std::cout << "MoveAssignment:" << std::endl;
-	DoublyList list4;
+	List list4;
 	list4 = list + list2;
 	list4.print();
 
 #endif // CHEK_MOVE_METODS
 #ifdef CHEK_INITIALIZER_LIST
-	DoublyList list = { 3, 5, 8, 13, 21 };
-	list.print();
-	list.reverse();
+	List list = { 3, 5, 8, 13, 21 };
+	//list.print();
+	//list.reverse_print();
 
 	for (int i : list) std::cout << i << "\t"; std::cout << std::endl;
 	std::cout << std::endl;
+	std::cout << delimiter << std::endl;
+	for (Iterator it = list.ended(); it != 0; --it) std::cout << (int)it << "\t"; std::cout << std::endl;
 #endif // CHEK_INITIALIZER_LIST
 
 }

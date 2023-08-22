@@ -1,7 +1,10 @@
 #include<iostream>
 #define tab "\t"
 #define delimitr "\n------------------------------------------------\n"
-
+class List;
+List operator+(const List& left, const List& right);
+class Iterator;
+class Element;
 class List
 {
 	class Element
@@ -16,7 +19,48 @@ class List
 		}
 		~Element(){std::cout << "EDestructor:\t" << this << std::endl;}
 		friend class List;
+		friend class Iterator;
+		friend List operator+(const List& left, const List& right);
 	}*Head, *Tail;
+	class Iterator
+	{
+		Element* Temp;
+	public:
+		Iterator(Element* Temp = nullptr) : Temp(Temp)
+		{
+			std::cout << "ITConstructor:\t" << this << std::endl;
+		}
+		~Iterator()
+		{
+			std::cout << "ITDestructor:\t" << this << std::endl;
+		}
+		Iterator& operator++()
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+		Iterator& operator--()
+		{
+			Temp = Temp->pPrev;
+			return *this;
+		}
+		bool operator==(const Iterator& other) const
+		{
+			return this->Temp == other.Temp;
+		}
+		bool operator!=(const Iterator& other) const
+		{
+			return this->Temp != other.Temp;
+		}
+		int operator*()
+		{
+			return Temp->Data;
+		}
+		explicit operator int()
+		{
+			return this->Temp->Data;
+		}
+	};
 	unsigned int size;
 public:
 	List()
@@ -35,6 +79,37 @@ public:
 		while (Tail)pop_back(); //Проверяем pop_back
 		std::cout << "ElDestructor:\t" << this << std::endl;
 	}
+	List(const List& other) :List()
+	{
+		std::cout << "DCopyConstructor:\t" << this << std::endl;
+		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
+		size = other.size;
+	}
+	//						Operators
+	
+	List& operator=(const List& other)
+	{
+		std::cout << "DCopyAssignment:\t" << this << std::endl;
+		while (Head)pop_front();
+		Head = nullptr;
+		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
+		return *this;
+		size = other.size;
+	}
+	List& operator=(List&& other)
+	{
+		if (this == &other) return *this;
+		while (Head)pop_front();
+		Head = other.Head;
+		other.Head = nullptr;
+		Tail = other.Tail;
+		other.Tail = nullptr;
+		std::cout << "DMoveConstructor:\t" << this << std::endl;
+		size = other.size;
+		return *this;
+	}
+
+
 	//						Adding Elements
 	void push_front(int Data)
 	{
@@ -112,6 +187,14 @@ public:
 	}
 
 	//						Method's
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
 	void print() const
 	{
 		for (Element* Temp = Head; Temp; Temp = Temp->pNext) 
@@ -125,7 +208,17 @@ public:
 			std::cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << std::endl;
 		std::cout << std::endl;
 	}
+	friend class Iterator;
+	friend List operator+(const List& left, const List& right);
 };
+
+List operator+(const List& left, const List& right)
+{
+	List cat = left;
+	for (List::Element* Temp = right.Head; Temp; Temp = Temp->pNext) cat.push_back(Temp->Data);
+	return cat;
+}
+
 //#define BASE_CHEK
 void main()
 {
@@ -154,4 +247,7 @@ void main()
 
 	List list = { 3, 5, 8, 13, 21 };
 	list.print();
+	for (int i : list) std::cout << i << tab; std::cout << std::endl;
+	//std::cout << typeid(list.end()).name() << std::endl;
+	//for(Iterator it = list.end(); it != list.begin(); --it) std::cout << it << tab; std::cout << std::endl;
 }
