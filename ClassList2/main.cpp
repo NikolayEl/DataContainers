@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 #define tab "\t"
 #define delimitr "\n------------------------------------------------\n"
 class List;
@@ -75,8 +75,8 @@ public:
 	}
 	~List()
 	{
-		//while (Head)pop_front(); //Проверяли pop_front
-		while (Tail)pop_back(); //Проверяем pop_back
+		//while (Head)pop_front(); //РџСЂРѕРІРµСЂСЏР»Рё pop_front
+		while (Tail)pop_back(); //РџСЂРѕРІРµСЂСЏРµРј pop_back
 		std::cout << "ElDestructor:\t" << this << std::endl;
 	}
 	List(const List& other) :List()
@@ -114,7 +114,7 @@ public:
 	void push_front(int Data)
 	{
 		if (!Head && !Tail) Head = Tail = new Element(Data);
-		else Head = Head->pPrev = new Element(Data, Head); //круто!! Справа налево, поэтому все грамотно получается
+		else Head = Head->pPrev = new Element(Data, Head); //РєСЂСѓС‚Рѕ!! РЎРїСЂР°РІР° РЅР°Р»РµРІРѕ, РїРѕСЌС‚РѕРјСѓ РІСЃРµ РіСЂР°РјРѕС‚РЅРѕ РїРѕР»СѓС‡Р°РµС‚СЃСЏ
 		size++;
 	}
 	void push_back(int Data)
@@ -225,7 +225,7 @@ void main()
 	setlocale(LC_ALL, "");
 #ifdef BASE_CHEK
 	int n;
-	std::cout << "Введите размер списка: "; std::cin >> n;
+	std::cout << "Р’РІРµРґРёС‚Рµ СЂР°Р·РјРµСЂ СЃРїРёСЃРєР°: "; std::cin >> n;
 	List list;
 	for (int i = 0; i < n; i++)
 	{
