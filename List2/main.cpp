@@ -1,5 +1,5 @@
 ﻿#include <iostream>
-#define delimitr "\n-----------------------------------------------------\n"
+#define delimiter "\n-----------------------------------------------------\n"
 class DoublyList;
 DoublyList operator+(const DoublyList& left, const DoublyList& right);
 class Iterator;
@@ -223,7 +223,7 @@ public:
 		//std::cout << "Begin: \t" << Head << "\t" << Head->Data << std::endl;
 		//std::cout << "End: \t" << Tail << "\t" << Tail->Data << std::endl;
 	}
-	void print_end() const //Сделал для проверки Tail & pPrev
+	void reverse_print() const //Сделал для проверки Tail & pPrev
 	{
 		std::cout << "Head:\t" << Head << std::endl;
 		std::cout << "Tail:\t" << Tail << std::endl;
@@ -261,59 +261,59 @@ void main()
 		list.push_front(rand() % 100);
 	}
 	list.print();
-	std::cout << delimitr << std::endl;
-	list.print_end();
+	std::cout << delimiter << std::endl;
+	list.reverse();
 
 #endif // CHEK_PUSH_FRONT
 #ifdef CHEK_FUNCTIONS
 	list.print();
-	/*std::cout << delimitr << std::endl;
+	/*std::cout << delimiter << std::endl;
 	list.print_end();*/
-	std::cout << delimitr << std::endl;
+	std::cout << delimiter << std::endl;
 	std::cout << "Pop front: " << std::endl;
 	list.pop_front();
 	list.print();
-	list.print_end();
-	std::cout << delimitr << std::endl;
+	list.reverse();
+	std::cout << delimiter << std::endl;
 	std::cout << "Pop back:" << std::endl;
 	list.pop_back();
 	list.print();
-	list.print_end();
-	std::cout << delimitr << std::endl;
+	list.reverse();
+	std::cout << delimiter << std::endl;
 	std::cout << "Insert:" << std::endl;
 	list.insert(4, 321);
 	list.print();
-	list.print_end();
-	std::cout << delimitr << std::endl;
+	list.reverse();
+	std::cout << delimiter << std::endl;
 	std::cout << "Erase:" << std::endl;
 	list.erase(0);
 	list.print();
-	list.print_end();
+	list.reverse();
 #endif // CHEK_FUNCTIONS
 #ifdef CHEK_COPY_METHODS
-	std::cout << delimitr << std::endl;
+	std::cout << delimiter << std::endl;
 	std::cout << "CopyConstructor:" << std::endl;
 	DoublyList list1 = list;
 	list1.print();
-	list1.print_end();
-	std::cout << delimitr << std::endl;
+	list1.reverse();
+	std::cout << delimiter << std::endl;
 	std::cout << "CopyAssignment:" << std::endl;
 	DoublyList list2;
 	list2 = list;
 	list2.print();
-	list2.print_end();
+	list2.reverse();
 
 #endif // CHEK_COPY_METHODS
 #ifdef CHEK_MOVE_METODS
 	DoublyList list2;
 	for (int i = 0; i < size + 2; i++)list2.push_back(rand() % 100);
 	list2.print();
-	std::cout << delimitr << std::endl;
+	std::cout << delimiter << std::endl;
 	std::cout << "MoveConstructor:" << std::endl;
 	DoublyList list3 = list + list2;
-	//std::cout << delimitr << std::endl;
+	//std::cout << delimiter << std::endl;
 	list3.print();
-	std::cout << delimitr << std::endl;
+	std::cout << delimiter << std::endl;
 	std::cout << "MoveAssignment:" << std::endl;
 	DoublyList list4;
 	list4 = list + list2;
@@ -323,7 +323,7 @@ void main()
 #ifdef CHEK_INITIALIZER_LIST
 	DoublyList list = { 3, 5, 8, 13, 21 };
 	list.print();
-	list.print_end();
+	list.reverse();
 
 	for (int i : list) std::cout << i << "\t"; std::cout << std::endl;
 	std::cout << std::endl;

@@ -5,7 +5,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 #define tab "\t"
-#define delimitr "\n---------------------------------------------------------------\n"
+#define delimiter "\n---------------------------------------------------------------\n"
 class ForwardList;
 ForwardList operator+(const ForwardList& left, const ForwardList& right);
 class Element
@@ -249,40 +249,40 @@ void main()
 	{
 		list.push_front(rand() % 100);
 	}
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	cout << "Insert push back" << endl;
 	list.push_back(123);
 	list.print();
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	cout << "Insert push front" << endl;
 	list.push_front(123);
 	list.print();
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	cout << "Insert pop front" << endl;
 	list.pop_front();
 	list.print();
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	cout << "Insert pop back" << endl;
 	list.pop_back();
 	list.print();
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	cout << "Insert element:" << endl;
 	list.insert(1, 321);
 	list.print();
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	cout << "Delete element:" << endl;
 	list.erase(2);
 	list.print();
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	cout << "Copy Constructor:" << endl;
 	ForwardList A(list);
 	A.print();
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	cout << "Copy Assignment:" << endl;
 	ForwardList B;
 	B = list;
 	B.print();
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	ForwardList C = A + B;
 	C.print();
 #endif // BASE_CHEK
@@ -294,17 +294,17 @@ void main()
 	list1.push_back(13);
 	list1.push_back(21);
 	list1.print();
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 
 	ForwardList list2;
 	list2.push_back(34);
 	list2.push_back(55);
 	list2.push_back(89);
 	list2.print();
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 
 	ForwardList list3;
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	list3 = (list1 + list2);
 	list3.print();
 
@@ -338,15 +338,15 @@ void main()
 #ifdef MOVE_SEMANTIC_CHEK
 	ForwardList list1 = { 3, 5, 8 , 13, 21 };
 	for (int i : list1) cout << i << tab; cout << endl;
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 
 	ForwardList list2 = { 34, 55, 89 };
 	for (int i : list2) cout << i << tab; cout << endl;
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	
 	ForwardList list3;
 	list3 = list1 + list2;
-	cout << delimitr << endl;
+	cout << delimiter << endl;
 	for (int i : list3) cout << i << tab; cout << endl; //Move constructor
 #endif // MOVE_SEMANTIC_CHEK
 
