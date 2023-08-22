@@ -2,7 +2,7 @@
 #define delimiter "\n-----------------------------------------------------\n"
 class List;
 List operator+(const List& left, const List& right);
-//std::ostream& operator<<(std::ostream& out, const Iterator*& obj);
+//std::ostream& operator<<(std::ostream& out, const Iterator& obj);
 class Iterator;
 class Element
 {
@@ -22,7 +22,7 @@ public:
 	}
 	friend class List;
 	friend List operator+(const List& left, const List& right);
-	//friend std::ostream& operator<<(std::ostream& out, const Iterator*& obj);
+	//friend std::ostream& operator<<(std::ostream& out, const Iterator& obj);
 	friend class Iterator;
 };
 class Iterator
@@ -63,7 +63,7 @@ class Iterator
 	{
 		return Temp->Data;
 	}
-	//friend std::ostream& operator<<(std::ostream& out, const Iterator*& obj);
+	//friend std::ostream& operator<<(std::ostream& out, const Iterator& obj);
 };
 
 class List
@@ -130,10 +130,6 @@ public:
 		return *this;
 	}
 	//								Method's
-	Element get_tail() const
-	{
-		return *this->Tail;
-	}
 	void push_front(int Data)
 	{
 		Element* Temp; //Завожу дополнительную переменную Temp для того, чтобы прописывать pPrev
@@ -255,7 +251,7 @@ List operator+(const List& left, const List& right)
 	for (Element* Temp = right.Head; Temp; Temp = Temp->pNext) cat.push_back(Temp->Data);
 	return cat;
 }
-//std::ostream& operator<<(std::ostream& out, const Iterator*& obj)
+//std::ostream& operator<<(std::ostream& out, const Iterator& obj)
 //{
 //	return out << obj->Temp->Data;
 //}
