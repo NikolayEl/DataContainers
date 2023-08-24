@@ -1,6 +1,7 @@
 ﻿#include<iostream>
 #define tab "\t"
 #define delimitr "\n------------------------------------------------\n"
+class ReverseIterator;
 class List;
 List operator+(const List& left, const List& right);
 class Iterator;
@@ -19,9 +20,9 @@ class List
 		}
 		~Element(){std::cout << "EDestructor:\t" << this << std::endl;}
 		friend class List;
-		friend class Iterator;
 		friend List operator+(const List& left, const List& right);
 	}*Head, *Tail;
+public:
 	class Iterator
 	{
 		Element* Temp;
@@ -78,6 +79,7 @@ class List
 			return this->Temp->Data;
 		}
 	};
+public:
 	class ReverseIterator
 	{
 		Element* Temp;
@@ -89,6 +91,44 @@ class List
 		~ReverseIterator()
 		{
 			std::cout << "RITDestructor:\t" << this << std::endl;
+		}
+		ReverseIterator& operator++()
+		{
+			Temp = Temp->pPrev;
+			return *this;
+		}
+		ReverseIterator operator++(int)
+		{
+			ReverseIterator old = *this;
+			Temp = Temp->pPrev;
+			return old;
+		}
+		ReverseIterator& operator--()
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+		ReverseIterator operator--(int)
+		{
+			ReverseIterator old = *this;
+			Temp = Temp->pNext;
+			return old;
+		}
+		bool operator==(const ReverseIterator& other)const
+		{
+			return this->Temp == other.Temp;
+		}
+		bool operator!=(const ReverseIterator& other)const
+		{
+			return this->Temp != other.Temp;
+		}
+		const int& operator*() const
+		{
+			return Temp->Data;
+		}
+		int& operator*()
+		{
+			return Temp->Data;
 		}
 	};
 	unsigned int size;
@@ -112,19 +152,21 @@ public:
 	List(const List& other) :List()
 	{
 		std::cout << "DCopyConstructor:\t" << this << std::endl;
-		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
+		//for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
 		size = other.size;
+		*this = other;
 	}
 	//						Operators
 	
 	List& operator=(const List& other)
 	{
-		std::cout << "DCopyAssignment:\t" << this << std::endl;
+		if (this == &other) return *this;
 		while (Head)pop_front();
 		Head = nullptr;
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext) push_back(Temp->Data);
-		return *this;
+		std::cout << "LCopyAssignment:\t" << this << std::endl;
 		size = other.size;
+		return *this;
 	}
 	List& operator=(List&& other)
 	{
@@ -217,11 +259,19 @@ public:
 	}
 
 	//						Method's
-	Iterator begin()
+	const Iterator begin() const
 	{
 		return Head;
 	}
-	Iterator end()
+	const Iterator end() const
+	{
+		return nullptr;
+	}
+	ReverseIterator rbegin()
+	{
+		return Tail;
+	}
+	ReverseIterator rend()
 	{
 		return nullptr;
 	}
@@ -238,14 +288,13 @@ public:
 			std::cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << std::endl;
 		std::cout << std::endl;
 	}
-	friend class Iterator;
 	friend List operator+(const List& left, const List& right);
 };
 
 List operator+(const List& left, const List& right)
 {
 	List cat = left;
-	for (List::Element* Temp = right.Head; Temp; Temp = Temp->pNext) cat.push_back(Temp->Data);
+	for (List::Iterator it = right.begin(); it != right.end(); ++it) cat.push_back(*it);
 	return cat;
 }
 
@@ -256,28 +305,32 @@ void main()
 #ifdef BASE_CHEK
 	int n;
 	std::cout << "Введите размер списка: "; std::cin >> n;
-	List list;
+	List list1;
 	for (int i = 0; i < n; i++)
 	{
-		//list.push_front(rand() % 100);
-		list.push_back(rand() % 100);
+		//list1.push_front(rand() % 100);
+		list1.push_back(rand() % 100);
 	}
-	list.print();
+	list1.print();
 	std::cout << delimitr << std::endl;
-	list.reverse_print();
+	list1.reverse_print();
 	int index;
 	int value;
 	std::cout << "Enter the index of the added element: "; std::cin >> index;
 	std::cout << "Enter the value of the added element: "; std::cin >> value;
-	list.insert(value, index);
-	list.print();
+	list1.insert(value, index);
+	list1.print();
 	std::cout << delimitr << std::endl;
-	list.reverse_print();
+	list1.reverse_print();
 #endif // BASE_CHEK
 
-	List list = { 3, 5, 8, 13, 21 };
-	list.print();
-	for (int i : list) std::cout << i << tab; std::cout << std::endl;
-	//std::cout << typeid(list.end()).name() << std::endl;
-	for(List::Iterator it = list.end(); it != list.begin(); it--) std::cout << *it << tab; std::cout << std::endl;
+	List list1 = { 3, 5, 8, 13, 21 };
+	list1.print();
+	for (int i : list1) std::cout << i << tab; std::cout << std::endl;
+	std::cout << typeid(list1.end()).name() << std::endl;
+	//for(List::ReverseIterator it = list1.rbegin(); it != list1.rend(); ++it) std::cout << *it << tab; std::cout << std::endl;
+	List list2 = { 34, 55, 89 };
+	for (int i : list2) std::cout << i << tab; std::cout << std::endl;
+	List list3 = list1 + list2;
+	for (int i : list3) std::cout << i << tab; std::cout << std::endl;
 }
