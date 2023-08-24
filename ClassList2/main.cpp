@@ -64,13 +64,31 @@ class List
 		{
 			return this->Temp != other.Temp;
 		}
-		int operator*()
+		int& operator*()
 		{
 			return Temp->Data;
 		}
+		const int& operator*()const
+		{
+			return Temp->Data;
+		}
+
 		explicit operator int()
 		{
 			return this->Temp->Data;
+		}
+	};
+	class ReverseIterator
+	{
+		Element* Temp;
+	public:
+		ReverseIterator(Element* Temp = nullptr) : Temp(Temp)
+		{
+			std::cout << "RITConstructor:\t" << this << std::endl;
+		}
+		~ReverseIterator()
+		{
+			std::cout << "RITDestructor:\t" << this << std::endl;
 		}
 	};
 	unsigned int size;
@@ -261,5 +279,5 @@ void main()
 	list.print();
 	for (int i : list) std::cout << i << tab; std::cout << std::endl;
 	//std::cout << typeid(list.end()).name() << std::endl;
-	//for(Iterator it = list.end(); it != list.begin(); --it) std::cout << it << tab; std::cout << std::endl;
+	for(List::Iterator it = list.end(); it != list.begin(); it--) std::cout << *it << tab; std::cout << std::endl;
 }
