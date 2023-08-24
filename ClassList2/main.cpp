@@ -39,10 +39,22 @@ class List
 			Temp = Temp->pNext;
 			return *this;
 		}
+		Iterator operator++(int)
+		{
+			Iterator old = *this;
+			Temp = Temp->pNext;
+			return old;
+		}
 		Iterator& operator--()
 		{
 			Temp = Temp->pPrev;
 			return *this;
+		}
+		Iterator operator--(int)
+		{
+			Iterator old = *this;
+			Temp = Temp->pPrev;
+			return old;
 		}
 		bool operator==(const Iterator& other) const
 		{
