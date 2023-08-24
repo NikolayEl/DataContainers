@@ -30,32 +30,32 @@ public:
 		cout << "EDestructor:\t" << this << endl;
 	}
 	friend class ForwardList;
-	friend class Iterator;
+	friend class ConstIterator;
 	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
-class Iterator
+class ConstIterator
 {
 	Element* Temp;
 public:
-	Iterator(Element* Temp = nullptr) :Temp(Temp)
+	ConstIterator(Element* Temp = nullptr) :Temp(Temp)
 	{
 		cout << "ItConstructor:\t" << this << endl;
 	}
-	~Iterator()
+	~ConstIterator()
 	{
 		cout << "ItDestructor:\t" << this << endl;
 	}
-	Iterator& operator++()
+	ConstIterator& operator++()
 	{
 		Temp = Temp->pNext;
 		return *this;
 	}
 
-	bool operator==(const Iterator& other)const
+	bool operator==(const ConstIterator& other)const
 	{
 		return this->Temp == other.Temp;
 	}	
-	bool operator!=(const Iterator& other)const
+	bool operator!=(const ConstIterator& other)const
 	{
 		return this->Temp != other.Temp;
 	}
@@ -76,7 +76,7 @@ public:
 	ForwardList(const std::initializer_list<int> &arr):ForwardList()
 	{
 		
-		//for (int const* it = arr.begin(); it != arr.end(); it++)
+		//for (int const* it = arr.cbegin(); it != arr.cend(); it++)
 		//{
 		//	push_back(*it);
 		//}
@@ -194,12 +194,12 @@ public:
 
 
 	//					Methods:
-	Iterator begin()
+	ConstIterator cbegin()
 	{
 		return Head;
 	}
 
-	Iterator end()
+	ConstIterator cend()
 	{
 		return nullptr;
 		//Element* Temp;
@@ -323,8 +323,8 @@ void main()
 	ForwardList list = {3, 5, 8, 13, 21};
 	list.print();
 
-	//cout << "Begin:" << *list.begin() << endl; //Проверка работы функций
-	//cout << "End:" << *list.end() << endl;
+	//cout << "Begin:" << *list.cbegin() << endl; //Проверка работы функций
+	//cout << "End:" << *list.cend() << endl;
 	for (int i: list) // Это не будет работать т.к. наш ForwardList - это список из данных разных областей памяти, а данный тип цикла работает с функциями
 	//	// Begine и End, с помощью которых можно задать начало и конец массива и таким образом перебрать массив, но только из одной области памяти непрерывной
 	//	// Я не знаю может быть кроме этих функций можно задать и шаг, тогда эту задачу можно выполнить, а иначе нет.
