@@ -2,8 +2,8 @@
 #define delimiter "\n-----------------------------------------------------\n"
 class List;
 List operator+(const List& left, const List& right);
-//std::ostream& operator<<(std::ostream& out, const ConstIterator& obj);
-class ConstIterator;
+//std::ostream& operator<<(std::ostream& out, const Iterator& obj);
+class Iterator;
 class Element
 {
 	int Data;
@@ -22,36 +22,36 @@ public:
 	}
 	friend class List;
 	friend List operator+(const List& left, const List& right);
-	//friend std::ostream& operator<<(std::ostream& out, const ConstIterator& obj);
-	friend class ConstIterator;
+	//friend std::ostream& operator<<(std::ostream& out, const Iterator& obj);
+	friend class Iterator;
 };
-class ConstIterator
+class Iterator
 {
 	Element* Temp;
 	public:
-	ConstIterator(Element* Temp = nullptr) : Temp(Temp)
+	Iterator(Element* Temp = nullptr) : Temp(Temp)
 	{
 		std::cout << "ITConstructor:\t" << this << std::endl;
 	}
-	~ConstIterator()
+	~Iterator()
 	{
 		std::cout << "ITDestructor:\t" << this << std::endl;
 	}
-	ConstIterator& operator++()
+	Iterator& operator++()
 	{
 		Temp = Temp->pNext;
 		return *this;
 	}
-	ConstIterator& operator--()
+	Iterator& operator--()
 	{
 		Temp = Temp->pPrev;
 		return *this;
 	}
-	bool operator==(const ConstIterator& other) const
+	bool operator==(const Iterator& other) const
 	{
 		return this->Temp == other.Temp;
 	}
-	bool operator!=(const ConstIterator& other) const
+	bool operator!=(const Iterator& other) const
 	{
 		return this->Temp != other.Temp;
 	}
@@ -63,7 +63,7 @@ class ConstIterator
 	{
 		return Temp->Data;
 	}
-	//friend std::ostream& operator<<(std::ostream& out, const ConstIterator& obj);
+	//friend std::ostream& operator<<(std::ostream& out, const Iterator& obj);
 };
 
 class List
@@ -212,15 +212,15 @@ public:
 		}
 		size--;
 	}
-	ConstIterator cbegin()
+	Iterator begin()
 	{
 		return Head;
 	}
-	ConstIterator cend()
+	Iterator end()
 	{
 		return nullptr;
 	}
-	ConstIterator ended()
+	Iterator ended()
 	{
 		return Tail;
 	}
@@ -243,7 +243,7 @@ public:
 		std::cout << std::endl;
 	}
 	friend List operator+(const List& left, const List& right);
-	friend class ConstIterator;
+	friend class Iterator;
 };
 List operator+(const List& left, const List& right)
 {
@@ -251,7 +251,7 @@ List operator+(const List& left, const List& right)
 	for (Element* Temp = right.Head; Temp; Temp = Temp->pNext) cat.push_back(Temp->Data);
 	return cat;
 }
-//std::ostream& operator<<(std::ostream& out, const ConstIterator& obj)
+//std::ostream& operator<<(std::ostream& out, const Iterator& obj)
 //{
 //	return out << obj->Temp->Data;
 //}
@@ -343,7 +343,7 @@ void main()
 	for (int i : list) std::cout << i << "\t"; std::cout << std::endl;
 	std::cout << std::endl;
 	std::cout << delimiter << std::endl;
-	for (ConstIterator it = list.ended(); it != 0; --it) std::cout << (int)it << "\t"; std::cout << std::endl;
+	for (Iterator it = list.ended(); it != 0; --it) std::cout << (int)it << "\t"; std::cout << std::endl;
 #endif // CHEK_INITIALIZER_LIST
 
 }

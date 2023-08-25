@@ -6,11 +6,11 @@ using std::cout;
 using std::endl;
 #define tab "\t"
 #define delimiter "\n---------------------------------------------------------------\n"
-class ForwardList;
 ForwardList operator+(const ForwardList& left, const ForwardList& right);
+template<typename T>
 class Element
 {
-	int Data; // значение элемента
+	T Data; // значение элемента
 	Element* pNext; // адрес следующего элемента
 public:
 	/*Element* get_pNext() const
@@ -21,7 +21,7 @@ public:
 	{
 		return Data;
 	}*/
-	Element(int Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
+	Element(T Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
 	{
 		cout << "EConstructor:\t" << this << endl;
 	}
@@ -30,40 +30,42 @@ public:
 		cout << "EDestructor:\t" << this << endl;
 	}
 	friend class ForwardList;
-	friend class ConstIterator;
+	friend class Iterator;
 	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
-class ConstIterator
+template<typename T>
+class Iterator
 {
 	Element* Temp;
 public:
-	ConstIterator(Element* Temp = nullptr) :Temp(Temp)
+	Iterator(Element* Temp = nullptr) :Temp(Temp)
 	{
 		cout << "ItConstructor:\t" << this << endl;
 	}
-	~ConstIterator()
+	~Iterator()
 	{
 		cout << "ItDestructor:\t" << this << endl;
 	}
-	ConstIterator& operator++()
+	Iterator& operator++()
 	{
 		Temp = Temp->pNext;
 		return *this;
 	}
 
-	bool operator==(const ConstIterator& other)const
+	bool operator==(const Iterator& other)const
 	{
 		return this->Temp == other.Temp;
 	}	
-	bool operator!=(const ConstIterator& other)const
+	bool operator!=(const Iterator& other)const
 	{
 		return this->Temp != other.Temp;
 	}
-	int operator*()
+	T& operator*()
 	{
 		return Temp->Data;
 	}
 };
+template<typename T>
 class ForwardList
 {
 	Element* Head; //Голова списка - содержит адрес начального элемента списка
@@ -76,11 +78,11 @@ public:
 	ForwardList(const std::initializer_list<int> &arr):ForwardList()
 	{
 		
-		//for (int const* it = arr.cbegin(); it != arr.cend(); it++)
+		//for (int const* it = arr.begin(); it != arr.end(); it++)
 		//{
 		//	push_back(*it);
 		//}
-		for (int i: arr)
+		for (T i: arr)
 		{
 			push_back(i);
 		}
@@ -143,11 +145,11 @@ public:
 	}
 
 	//					Adding elemetns;
-	void push_front(int Data)
+	void push_front(T Data)
 	{
 		Head = new Element(Data, Head);
 	}
-	void push_back(int Data)
+	void push_back(T Data)
 	{
 		if (Head == nullptr) return push_front(Data);
 		Element* Temp = Head;
@@ -171,7 +173,7 @@ public:
 		Temp->pNext = nullptr;
 	}
 
-	void insert(const int index, const int number)
+	void insert(const int index, const T number)
 	{
 		if (index == 0) return push_front(number);
 		Element* Temp = Head;
@@ -194,12 +196,12 @@ public:
 
 
 	//					Methods:
-	ConstIterator cbegin()
+	Iterator begin()
 	{
 		return Head;
 	}
 
-	ConstIterator cend()
+	Iterator end()
 	{
 		return nullptr;
 		//Element* Temp;
@@ -225,7 +227,7 @@ public:
 	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
 
-ForwardList operator+(const ForwardList& left, const ForwardList& right)
+template <typename T>ForwardList operator+(const ForwardList& left, const ForwardList& right)
 {
 	ForwardList cat = left;
 	for (Element* Temp = right.Head; Temp; Temp = Temp->pNext)cat.push_back(Temp->Data);
@@ -323,8 +325,8 @@ void main()
 	ForwardList list = {3, 5, 8, 13, 21};
 	list.print();
 
-	//cout << "Begin:" << *list.cbegin() << endl; //Проверка работы функций
-	//cout << "End:" << *list.cend() << endl;
+	//cout << "Begin:" << *list.begin() << endl; //Проверка работы функций
+	//cout << "End:" << *list.end() << endl;
 	for (int i: list) // Это не будет работать т.к. наш ForwardList - это список из данных разных областей памяти, а данный тип цикла работает с функциями
 	//	// Begine и End, с помощью которых можно задать начало и конец массива и таким образом перебрать массив, но только из одной области памяти непрерывной
 	//	// Я не знаю может быть кроме этих функций можно задать и шаг, тогда эту задачу можно выполнить, а иначе нет.

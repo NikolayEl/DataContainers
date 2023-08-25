@@ -5,7 +5,7 @@
 //class Element;
 //class ConstBaseIterator;
 //class ConstReverseIterator;
-//class ConstIterator;
+//class Iterator;
 //class Iterator;
 //class ReverseIterator;
 //List operator+(const List& left, const List& right);
@@ -54,36 +54,36 @@ public:
 		}
 	};
 public:
-	class ConstIterator :public ConstBaseIterator
+	class Iterator :public ConstBaseIterator
 	{
 	public:
-		ConstIterator(Element* Temp = nullptr) : ConstBaseIterator(Temp)
+		Iterator(Element* Temp = nullptr) : ConstBaseIterator(Temp)
 		{
 			std::cout << "ITConstructor:\t" << this << std::endl;
 		}
-		~ConstIterator()
+		~Iterator()
 		{
 			std::cout << "ITDestructor:\t" << this << std::endl;
 		}
-		ConstIterator& operator++()
+		Iterator& operator++()
 		{
 			Temp = Temp->pNext;
 			return *this;
 		}
-		ConstIterator operator++(int)
+		Iterator operator++(int)
 		{
-			ConstIterator old = *this;
+			Iterator old = *this;
 			Temp = Temp->pNext;
 			return old;
 		}
-		ConstIterator& operator--()
+		Iterator& operator--()
 		{
 			Temp = Temp->pPrev;
 			return *this;
 		}
-		ConstIterator operator--(int)
+		Iterator operator--(int)
 		{
-			ConstIterator old = *this;
+			Iterator old = *this;
 			Temp = Temp->pPrev;
 			return old;
 		}
@@ -124,10 +124,10 @@ public:
 		}
 	};
 public:
-		class Iterator :public ConstIterator
+		class Iterator :public Iterator
 		{
 		public:
-			Iterator(Element* Temp = nullptr):ConstIterator(Temp) {}
+			Iterator(Element* Temp = nullptr):Iterator(Temp) {}
 			int& operator*()
 			{
 				return Temp->Data;
@@ -274,11 +274,11 @@ public:
 	}
 
 	//						Method's
-	ConstIterator cbegin() const
+	Iterator begin() const
 	{
 		return Head;
 	}
-	ConstIterator cend() const
+	Iterator end() const
 	{
 		return nullptr;
 	}
@@ -325,7 +325,7 @@ public:
 List operator+(const List& left, const List& right)
 {
 	List cat = left;
-	for (List::ConstIterator it = right.cbegin(); it != right.cend(); ++it) cat.push_back(*it);
+	for (List::Iterator it = right.begin(); it != right.end(); ++it) cat.push_back(*it);
 	return cat;
 }
 
@@ -359,7 +359,7 @@ void main()
 	List list1 = { 3, 5, 8, 13, 21 };
 	list1.print();
 	for (int i : list1) std::cout << i << tab; std::cout << std::endl;
-	std::cout << typeid(list1.cend()).name() << std::endl;
+	std::cout << typeid(list1.end()).name() << std::endl;
 	//for(List::ConstReverseIterator it = list1.crbegin(); it != list1.crend(); ++it) std::cout << *it << tab; std::cout << std::endl;
 	for (List::Iterator it = list1.begin(); it != list1.end(); ++it)
 	{
