@@ -75,7 +75,7 @@ public:
 		Head = nullptr; // Если список пуст, то его голова указывает на 0
 		cout << "LConstructor:\t" << this << endl;
 	}
-	ForwardList(const std::initializer_list<int> &arr):ForwardList()
+	ForwardList(const std::initializer_list<T> &arr):ForwardList()
 	{
 		
 		//for (int const* it = arr.begin(); it != arr.end(); it++)
@@ -227,7 +227,7 @@ public:
 	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
 
-template <typename T>ForwardList operator+(const ForwardList& left, const ForwardList& right)
+template <typename T> T ForwardList<T> operator+(const ForwardList& left, const ForwardList& right)
 {
 	ForwardList cat = left;
 	for (Element* Temp = right.Head; Temp; Temp = Temp->pNext)cat.push_back(Temp->Data);
@@ -338,7 +338,7 @@ void main()
 #endif // RANGE_BASE_FOR_ARRAY
 
 #ifdef MOVE_SEMANTIC_CHEK
-	ForwardList list1 = { 3, 5, 8 , 13, 21 };
+	ForwardList<int> list1 = { 3, 5, 8 , 13, 21 };
 	for (int i : list1) cout << i << tab; cout << endl;
 	cout << delimiter << endl;
 
