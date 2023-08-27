@@ -6,7 +6,7 @@ using std::cout;
 using std::endl;
 #define tab "\t"
 #define delimiter "\n---------------------------------------------------------------\n"
-ForwardList operator+(const ForwardList& left, const ForwardList& right);
+template <typename T> T ForwardList operator+(const ForwardList& left, const ForwardList& right);
 template<typename T>
 class Element
 {
