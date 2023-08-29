@@ -1,5 +1,4 @@
-﻿#include<iostream>
-#include"ListOfOA.h"
+﻿#include"ListOfOA.h"
 #include"ListOfOA.cpp"
 
 //#define BASE_CHECK
