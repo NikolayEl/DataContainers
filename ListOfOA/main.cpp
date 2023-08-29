@@ -15,20 +15,8 @@ template <typename T> class List
 		Element* pNext;
 		Element* pPrev;
 	public:
-		Element(T Data, Element* pNext = nullptr, Element* pPrev = nullptr) :Data(Data), pNext(pNext), pPrev(pPrev)
-		{
-#ifdef DEBUG
-			cout << "ECostructor:\t" << this << endl;
-#endif // DEBUG
-
-		}
-		~Element()
-		{
-#ifdef DEBUG
-			cout << "EDestructor:\t" << this << endl;
-#endif // DEBUG
-
-		}
+		Element(T Data, Element* pNext = nullptr, Element* pPrev = nullptr);
+		~Element();
 		friend class List;
 	}*Head, * Tail;
 	unsigned int size;
@@ -328,6 +316,27 @@ template <typename T>List<T> operator+(const List<T>& left, const List<T>& right
 	}
 	return cat;
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//								Element methods															 //
+
+template<typename T>List<T>::Element::Element(T Data, Element* pNext, Element* pPrev) :Data(Data), pNext(pNext), pPrev(pPrev)
+{
+#ifdef DEBUG
+	cout << "ECostructor:\t" << this << endl;
+#endif // DEBUG
+
+}
+template<typename T>List<T>::Element::~Element()
+{
+#ifdef DEBUG
+	cout << "EDestructor:\t" << this << endl;
+#endif // DEBUG
+
+}
+
+//								Element methods															 //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //#define BASE_CHECK
 //#define INT_CHEK
