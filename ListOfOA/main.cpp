@@ -12,7 +12,7 @@ void main()
 #ifdef BASE_CHECK
 	int n;
 	cout << "Введите размер списка: "; cin >> n;
-	List list;
+	List<int> list;
 	for (int i = 0; i < n; i++)
 	{
 		list.push_back(rand() % 100);
