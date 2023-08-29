@@ -3,13 +3,13 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //												Element methods																//
 
-template<typename T> List<T>::Element::Element(T Data, Element* pNext, Element* pPrev) :Data(Data), pNext(pNext), pPrev(pPrev)
+template<typename T> ListSeparation::List<T>::Element::Element(T Data, Element* pNext, Element* pPrev) :Data(Data), pNext(pNext), pPrev(pPrev)
 {
 #ifdef DEBUG
 	cout << "ECostructor:\t" << this << endl;
 #endif // DEBUG
 }
-template<typename T> List<T>::Element::~Element()
+template<typename T> ListSeparation::List<T>::Element::~Element()
 {
 #ifdef DEBUG
 	cout << "EDestructor:\t" << this << endl;
@@ -25,13 +25,13 @@ template<typename T> List<T>::Element::~Element()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //										ConstBaseIterator methods																//
 
-template<typename T> List<T>::ConstBaseIterator::ConstBaseIterator(Element* Temp) :Temp(Temp)
+template<typename T> ListSeparation::List<T>::ConstBaseIterator::ConstBaseIterator(Element* Temp) :Temp(Temp)
 {
 #ifdef DEBUG
 	cout << "BItConstructor:\t" << this << endl;
 #endif // DEBUG
 }
-template<typename T> List<T>::ConstBaseIterator::~ConstBaseIterator()
+template<typename T> ListSeparation::List<T>::ConstBaseIterator::~ConstBaseIterator()
 {
 #ifdef DEBUG
 	cout << "BItDestructor:\t" << this << endl;
@@ -39,15 +39,15 @@ template<typename T> List<T>::ConstBaseIterator::~ConstBaseIterator()
 
 }
 
-template<typename T> bool List<T>::ConstBaseIterator::operator==(const ConstBaseIterator& other)const
+template<typename T> bool ListSeparation::List<T>::ConstBaseIterator::operator==(const ConstBaseIterator& other)const
 {
 	return this->Temp == other.Temp;
 }
-template<typename T> bool List<T>::ConstBaseIterator::operator!=(const ConstBaseIterator& other)const
+template<typename T> bool ListSeparation::List<T>::ConstBaseIterator::operator!=(const ConstBaseIterator& other)const
 {
 	return this->Temp != other.Temp;
 }
-template<typename T> const T& List<T>::ConstBaseIterator::operator*()const
+template<typename T> const T& ListSeparation::List<T>::ConstBaseIterator::operator*()const
 {
 	return Temp->Data;
 }
@@ -60,47 +60,47 @@ template<typename T> const T& List<T>::ConstBaseIterator::operator*()const
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //												ConstIterator methods																//
 
-template<typename T> List<T>::ConstIterator::ConstIterator(Element* Temp) :ConstBaseIterator(Temp)
+template<typename T> ListSeparation::List<T>::ConstIterator::ConstIterator(Element* Temp) :ConstBaseIterator(Temp)
 {
 #ifdef DEBUG
 	cout << "ItConstructor:\t" << this << endl;
 #endif // DEBUG
 }
-template<typename T> List<T>::ConstIterator::~ConstIterator()
+template<typename T> ListSeparation::List<T>::ConstIterator::~ConstIterator()
 {
 #ifdef DEBUG
 	cout << "ItDestructor:\t" << this << endl;
 #endif // DEBUG
 }
 
-template<typename T> typename List<T>::ConstIterator& List<T>::ConstIterator::operator++()
+template<typename T> typename ListSeparation::List<T>::ConstIterator& ListSeparation::List<T>::ConstIterator::operator++()
 {
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 	return *this;
 }
-template<typename T> typename List<T>::ConstIterator List<T>::ConstIterator::operator++(int)
+template<typename T> typename ListSeparation::List<T>::ConstIterator ListSeparation::List<T>::ConstIterator::operator++(int)
 {
 	ConstIterator old = *this;
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 	return old;
 }
-template<typename T> typename List<T>::ConstIterator& List<T>::ConstIterator::operator--()
+template<typename T> typename ListSeparation::List<T>::ConstIterator& ListSeparation::List<T>::ConstIterator::operator--()
 {
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 	return *this;
 }
-template<typename T> typename List<T>::ConstIterator List<T>::ConstIterator::operator--(int)
+template<typename T> typename ListSeparation::List<T>::ConstIterator ListSeparation::List<T>::ConstIterator::operator--(int)
 {
 	ConstIterator old = *this;
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 	return old;
 }
 
-template <typename T>typename List<T>::ConstIterator List<T>::cbegin()const
+template <typename T>typename ListSeparation::List<T>::ConstIterator ListSeparation::List<T>::cbegin()const
 {
 	return Head;
 }
-template<typename T> typename List<T>::ConstIterator List<T>::cend()const
+template<typename T> typename ListSeparation::List<T>::ConstIterator ListSeparation::List<T>::cend()const
 {
 	return nullptr;
 }
@@ -113,45 +113,45 @@ template<typename T> typename List<T>::ConstIterator List<T>::cend()const
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //									      ConstReverseIterator methods														//
 
-template<typename T> List<T>::ConstReverseIterator::ConstReverseIterator(Element* Temp) :ConstBaseIterator(Temp)
+template<typename T> ListSeparation::List<T>::ConstReverseIterator::ConstReverseIterator(Element* Temp) :ConstBaseIterator(Temp)
 {
 #ifdef DEBUG
 	cout << "RItConstructor:\t" << this << endl;
 #endif // DEBUG
 }
-template<typename T> List<T>::ConstReverseIterator::~ConstReverseIterator()
+template<typename T> ListSeparation::List<T>::ConstReverseIterator::~ConstReverseIterator()
 {
 #ifdef DEBUG
 	cout << "RItDestructor:\t" << this << endl;
 #endif // DEBUG
 }
-template<typename T> typename List<T>::ConstReverseIterator& List<T>::ConstReverseIterator::operator++()
+template<typename T> typename ListSeparation::List<T>::ConstReverseIterator& ListSeparation::List<T>::ConstReverseIterator::operator++()
 {
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 	return *this;
 }
-template<typename T> typename List<T>::ConstReverseIterator List<T>::ConstReverseIterator::operator++(int)
+template<typename T> typename ListSeparation::List<T>::ConstReverseIterator ListSeparation::List<T>::ConstReverseIterator::operator++(int)
 {
 	ConstReverseIterator old = *this;
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 	return old;
 }
-template<typename T> typename List<T>::ConstReverseIterator& List<T>::ConstReverseIterator::operator--()
+template<typename T> typename ListSeparation::List<T>::ConstReverseIterator& ListSeparation::List<T>::ConstReverseIterator::operator--()
 {
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 	return *this;
 }
-template<typename T> typename List<T>::ConstReverseIterator& List<T>::ConstReverseIterator::operator--(int)
+template<typename T> typename ListSeparation::List<T>::ConstReverseIterator& ListSeparation::List<T>::ConstReverseIterator::operator--(int)
 {
 	ConstReverseIterator old = *this;
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 	return old;
 }
-template<typename T> typename List<T>::ConstReverseIterator List<T>::crbegin()const
+template<typename T> typename ListSeparation::List<T>::ConstReverseIterator ListSeparation::List<T>::crbegin()const
 {
 	return Tail;
 }
-template<typename T> typename List<T>::ConstReverseIterator List<T>::crend()const
+template<typename T> typename ListSeparation::List<T>::ConstReverseIterator ListSeparation::List<T>::crend()const
 {
 	return nullptr;
 }
@@ -164,17 +164,17 @@ template<typename T> typename List<T>::ConstReverseIterator List<T>::crend()cons
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //												Iterator methods															//
 
-template<typename T> List<T>::Iterator::Iterator(Element* Temp) :ConstIterator(Temp) {}
-template<typename T> T& List<T>::Iterator::operator*()
+template<typename T> ListSeparation::List<T>::Iterator::Iterator(Element* Temp) :ConstIterator(Temp) {}
+template<typename T> T& ListSeparation::List<T>::Iterator::operator*()
 {
 	return ConstBaseIterator::Temp->Data;
 }
 
-template<typename T> typename List<T>::Iterator List<T>::begin()
+template<typename T> typename ListSeparation::List<T>::Iterator ListSeparation::List<T>::begin()
 {
 	return Head;
 }
-template<typename T> typename List<T>::Iterator List<T>::end()
+template<typename T> typename ListSeparation::List<T>::Iterator ListSeparation::List<T>::end()
 {
 	return nullptr;
 }
@@ -187,17 +187,17 @@ template<typename T> typename List<T>::Iterator List<T>::end()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //												ReverseIterator methods														//
 
-template<typename T> List<T>::ReverseIterator::ReverseIterator(Element* Temp) :ConstReverseIterator(Temp) {}
-template<typename T> T& List<T>::ReverseIterator::operator*()
+template<typename T> ListSeparation::List<T>::ReverseIterator::ReverseIterator(Element* Temp) :ConstReverseIterator(Temp) {}
+template<typename T> T& ListSeparation::List<T>::ReverseIterator::operator*()
 {
 	return ConstBaseIterator::Temp->Data;
 }
 
-template<typename T> typename List<T>::ReverseIterator List<T>::rbegin()
+template<typename T> typename ListSeparation::List<T>::ReverseIterator ListSeparation::List<T>::rbegin()
 {
 	return Tail;
 }
-template<typename T> typename List<T>::ReverseIterator List<T>::rend()
+template<typename T> typename ListSeparation::List<T>::ReverseIterator ListSeparation::List<T>::rend()
 {
 	return nullptr;
 }
@@ -210,29 +210,29 @@ template<typename T> typename List<T>::ReverseIterator List<T>::rend()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //												List methods																//
 
-template<typename T> List<T>::List()
+template<typename T> ListSeparation::List<T>::List()
 {
 	Head = Tail = nullptr;
 	cout << "LConstructor:\t" << this << endl;
 }
-template<typename T> List<T>::List(const  std::initializer_list<T>& il) :List()
+template<typename T> ListSeparation::List<T>::List(const  std::initializer_list<T>& il) :List()
 {
 	for (T const* it = il.begin(); it != il.end(); ++it)
 	{
 		push_back(*it);
 	}
 }
-template <typename T> List<T>::List(const List<T>& other) :List()
+template <typename T> ListSeparation::List<T>::List(const ListSeparation::List<T>& other) :List()
 {
 	*this = other;
 }
-template <typename T> List<T>::~List()
+template <typename T> ListSeparation::List<T>::~List()
 {
 	//while (Head)pop_front();
 	while (Tail)pop_back();
 	cout << "LDestructor:\t" << this << endl;
 }
-template<typename T> List<T>& List<T>::operator=(const List<T>& other)
+template<typename T> ListSeparation::List<T>& ListSeparation::List<T>::operator=(const ListSeparation::List<T>& other)
 {
 	if (this == &other)return *this;
 	while (Head)pop_front();
@@ -240,19 +240,19 @@ template<typename T> List<T>& List<T>::operator=(const List<T>& other)
 	cout << "LCopyAssignment:\t" << this << endl;
 	return *this;
 }
-template<typename T> void List<T>::push_front(T Data)
+template<typename T> void ListSeparation::List<T>::push_front(T Data)
 {
 	if (Head == nullptr && Tail == nullptr)	Head = Tail = new Element(Data);
 	else Head = Head->pPrev = new Element(Data, Head);
 	size++;
 }
-template<typename T> void List<T>::push_back(T Data)
+template<typename T> void ListSeparation::List<T>::push_back(T Data)
 {
 	if (Head == nullptr && Tail == nullptr)Head = Tail = new Element(Data);
 	else Tail = Tail->pNext = new Element(Data, nullptr, Tail);
 	size++;
 }
-template<typename T> void List<T>::insert(T Data, int Index)
+template<typename T> void ListSeparation::List<T>::insert(T Data, int Index)
 {
 	if (Index == 0)return push_front(Data);
 	if (Index >= size)return push_back(Data);
@@ -270,7 +270,7 @@ template<typename T> void List<T>::insert(T Data, int Index)
 	Temp->pPrev = Temp->pPrev->pNext = new Element(Data, Temp, Temp->pPrev);
 	size++;
 }
-template<typename T> void List<T>::pop_front()
+template<typename T> void ListSeparation::List<T>::pop_front()
 {
 	if (Head == nullptr && Tail == nullptr)return;
 	if (Head == Tail)
@@ -284,7 +284,7 @@ template<typename T> void List<T>::pop_front()
 	Head->pPrev = nullptr;
 	size--;
 }
-template<typename T> void List<T>::pop_back()
+template<typename T> void ListSeparation::List<T>::pop_back()
 {
 	if (Head == Tail)return pop_front();
 	Tail = Tail->pPrev;
@@ -292,7 +292,7 @@ template<typename T> void List<T>::pop_back()
 	Tail->pNext = nullptr;
 	size--;
 }
-template<typename T> void List<T>::erase(int Index)
+template<typename T> void ListSeparation::List<T>::erase(int Index)
 {
 	if (Index == 0)return pop_front();
 	if (Index >= size)return;
@@ -311,20 +311,20 @@ template<typename T> void List<T>::erase(int Index)
 	Temp->pNext->pPrev = Temp->pPrev;
 	delete Temp;
 }
-template<typename T> void List<T>::print()const
+template<typename T> void ListSeparation::List<T>::print()const
 {
 	for (Element* Temp = Head; Temp; Temp = Temp->pNext)
 		cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 }
-template<typename T> void List<T>::reverse_print()const
+template<typename T> void ListSeparation::List<T>::reverse_print()const
 {
 	for (Element* Temp = Tail; Temp; Temp = Temp->pPrev)
 		cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 }
-template <typename T>List<T> operator+(const List<T>& left, const List<T>& right)
+template <typename T>ListSeparation::List<T> operator+(const ListSeparation::List<T>& left, const ListSeparation::List<T>& right)
 {
-	List<T> cat = left;
-	for (typename List<T>::ConstIterator it = right.cbegin(); it != right.cend(); ++it)
+	ListSeparation::List<T> cat = left;
+	for (typename ListSeparation::List<T>::ConstIterator it = right.cbegin(); it != right.cend(); ++it)
 	{
 		//(*it) *= 10;
 		cat.push_back(*it);

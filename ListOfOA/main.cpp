@@ -41,9 +41,9 @@ void main()
 	for (int i : list3)cout << i << tab; cout << endl;
 #endif // INT_CHEK
 #ifdef DOUBLE_CHEK
-	List<double> list1 = { 2.7, 3.14, 5.1 };
-	List<double> list2 = { 4.4, 8.3 };
-	List<double> list3 = list1 + list2;
+	ListSeparation::List<double> list1 = { 2.7, 3.14, 5.1 };
+	ListSeparation::List<double> list2 = { 4.4, 8.3 };
+	ListSeparation::List<double> list3 = list1 + list2;
 
 	for (double i : list1)cout << i << tab; cout << endl;
 	for (double i : list2)cout << i << tab; cout << endl;
