@@ -6,13 +6,13 @@
 template<typename T> List<T>::Element::Element(T Data, Element* pNext, Element* pPrev) :Data(Data), pNext(pNext), pPrev(pPrev)
 {
 #ifdef DEBUG
-	cout << "ECostructor:\t" << this << endl;
+	std::cout << "ECostructor:\t" << this << std::endl;
 #endif // DEBUG
 }
 template<typename T> List<T>::Element::~Element()
 {
 #ifdef DEBUG
-	cout << "EDestructor:\t" << this << endl;
+	std::cout << "EDestructor:\t" << this << std::endl;
 #endif // DEBUG
 
 }
@@ -28,13 +28,13 @@ template<typename T> List<T>::Element::~Element()
 template<typename T> List<T>::ConstBaseIterator::ConstBaseIterator(Element* Temp) :Temp(Temp)
 {
 #ifdef DEBUG
-	cout << "BItConstructor:\t" << this << endl;
+	std::cout << "BItConstructor:\t" << this << std::endl;
 #endif // DEBUG
 }
 template<typename T> List<T>::ConstBaseIterator::~ConstBaseIterator()
 {
 #ifdef DEBUG
-	cout << "BItDestructor:\t" << this << endl;
+	std::cout << "BItDestructor:\t" << this << std::endl;
 #endif // DEBUG
 
 }
@@ -63,13 +63,13 @@ template<typename T> const T& List<T>::ConstBaseIterator::operator*()const
 template<typename T> List<T>::ConstIterator::ConstIterator(Element* Temp) :ConstBaseIterator(Temp)
 {
 #ifdef DEBUG
-	cout << "ItConstructor:\t" << this << endl;
+	std::cout << "ItConstructor:\t" << this << std::endl;
 #endif // DEBUG
 }
 template<typename T> List<T>::ConstIterator::~ConstIterator()
 {
 #ifdef DEBUG
-	cout << "ItDestructor:\t" << this << endl;
+	std::cout << "ItDestructor:\t" << this << std::endl;
 #endif // DEBUG
 }
 
@@ -116,13 +116,13 @@ template<typename T> typename List<T>::ConstIterator List<T>::cend()const
 template<typename T> List<T>::ConstReverseIterator::ConstReverseIterator(Element* Temp) :ConstBaseIterator(Temp)
 {
 #ifdef DEBUG
-	cout << "RItConstructor:\t" << this << endl;
+	std::cout << "RItConstructor:\t" << this << std::endl;
 #endif // DEBUG
 }
 template<typename T> List<T>::ConstReverseIterator::~ConstReverseIterator()
 {
 #ifdef DEBUG
-	cout << "RItDestructor:\t" << this << endl;
+	std::cout << "RItDestructor:\t" << this << std::endl;
 #endif // DEBUG
 }
 template<typename T> typename List<T>::ConstReverseIterator& List<T>::ConstReverseIterator::operator++()
@@ -213,7 +213,7 @@ template<typename T> typename List<T>::ReverseIterator List<T>::rend()
 template<typename T> List<T>::List()
 {
 	Head = Tail = nullptr;
-	cout << "LConstructor:\t" << this << endl;
+	std::cout << "LConstructor:\t" << this << std::endl;
 }
 template<typename T> List<T>::List(const  std::initializer_list<T>& il) :List()
 {
@@ -230,14 +230,14 @@ template <typename T> List<T>::~List()
 {
 	//while (Head)pop_front();
 	while (Tail)pop_back();
-	cout << "LDestructor:\t" << this << endl;
+	std::cout << "LDestructor:\t" << this << std::endl;
 }
 template<typename T> List<T>& List<T>::operator=(const List<T>& other)
 {
 	if (this == &other)return *this;
 	while (Head)pop_front();
 	for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)push_back(Temp->Data);
-	cout << "LCopyAssignment:\t" << this << endl;
+	std::cout << "LCopyAssignment:\t" << this << std::endl;
 	return *this;
 }
 template<typename T> void List<T>::push_front(T Data)
@@ -314,12 +314,12 @@ template<typename T> void List<T>::erase(int Index)
 template<typename T> void List<T>::print()const
 {
 	for (Element* Temp = Head; Temp; Temp = Temp->pNext)
-		cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+		std::cout << Temp->pPrev << "\t" << Temp << "\t" << Temp->Data << "\t" << Temp->pNext << std::endl;
 }
 template<typename T> void List<T>::reverse_print()const
 {
 	for (Element* Temp = Tail; Temp; Temp = Temp->pPrev)
-		cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+		std::cout << Temp->pPrev << "\t" << Temp << "\t" << Temp->Data << "\t" << Temp->pNext << std::endl;
 }
 template <typename T>List<T> operator+(const List<T>& left, const List<T>& right)
 {
